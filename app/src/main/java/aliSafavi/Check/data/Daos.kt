@@ -4,6 +4,7 @@ import aliSafavi.Check.model.Bank
 import aliSafavi.Check.model.Check
 import aliSafavi.Check.model.Person
 import aliSafavi.Check.model.fullCheck
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
@@ -17,7 +18,7 @@ interface FullCheckDao{
     suspend fun update(check: Check)
     @Transaction
     @Query("select * from `Check` where isPaid = 'false'")
-    fun getAllUnPassedChecks(): Flow<List<fullCheck>>
+    fun getAllUnPaidChecks(): LiveData<List<fullCheck>>
 
 }
 
