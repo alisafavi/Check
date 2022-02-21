@@ -3,29 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/checkFragment">
+    app:startDestination="@id/checkListFragment">
     <fragment
         android:id="@+id/checkFragment"
-        android:name="aliSafavi.Check.check.CheckFragment"
+        android:name="aliSafavi.check.check.CheckFragment"
         android:label="fragment_check"
         tools:layout="@layout/fragment_check" />
     <fragment
         android:id="@+id/bankFragment"
-        android:name="aliSafavi.Check.bank.BankFragment"
+        android:name="aliSafavi.check.bank.BankFragment"
         android:label="fragment_bank"
         tools:layout="@layout/fragment_bank" />
     <fragment
         android:id="@+id/personFragment"
-        android:name="aliSafavi.Check.person.PersonFragment"
+        android:name="aliSafavi.check.person.PersonFragment"
         android:label="fragment_person"
         tools:layout="@layout/fragment_person" />
     <fragment
         android:id="@+id/checkListFragment"
-        android:name="aliSafavi.Check.check_list.CheckListFragment"
+        android:name="aliSafavi.check.check_list.CheckListFragment"
         android:label="fragment_check_list"
         tools:layout="@layout/fragment_check_list" >
         <action
             android:id="@+id/action_checkListFragment_to_checkFragment"
             app:destination="@id/checkFragment" />
+        <action
+            android:id="@+id/action_checkListFragment_to_personFragment"
+            app:destination="@id/personFragment" />
+        <action
+            android:id="@+id/action_checkListFragment_to_bankFragment"
+            app:destination="@id/bankFragment" />
     </fragment>
 </navigation>

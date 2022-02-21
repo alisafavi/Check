@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/checkListFragment"
+        android:title="check list"
+        android:icon="@drawable/ic_round_list"/>
+    <item
+        android:id="@+id/bankFragment"
+        android:title="banks"
+        android:icon="@drawable/ic_round_bank"
+        />
+    <item
+        android:id="@+id/personFragment"
+        android:title="persons"
+        android:icon="@drawable/ic_round_person"
+        />
+
+</menu>
