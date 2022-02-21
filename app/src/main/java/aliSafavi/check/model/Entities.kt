@@ -25,7 +25,7 @@ data class Person (
     @PrimaryKey(autoGenerate = true)
     val pId :Int =0,
     val name :String,
-    val phoneNumber : Int? = null
+    val phoneNumber : Long? = null
 
 )
 
@@ -34,7 +34,7 @@ data class Bank (
     @PrimaryKey(autoGenerate = true)
     val bId: Int=0,
     val name : String,
-    val accountNumber : Int? = null,
+    val accountNumber : Long,
     val img : String? = null
 )
 

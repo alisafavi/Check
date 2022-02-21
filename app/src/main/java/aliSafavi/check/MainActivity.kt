@@ -31,10 +31,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        val navController = findNavController(R.id.nav_host_fragment)
-//        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
-//    }
 
     private fun setupNavigationView() {
 
@@ -44,12 +40,10 @@ class MainActivity : AppCompatActivity() {
         val drawerLayout = binding.drawerLayout
 
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.personFragment,R.id.bankFragment,R.id.checkListFragment),
+            setOf(R.id.checkListFragment,R.id.bankListFragment,R.id.personListFragment),
             drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
-
-
     }
 }

@@ -42,6 +42,13 @@ interface BankDao{
     suspend fun delete(bank: Bank)
     @Update
     suspend fun update(bank: Bank)
+
     @Query("select * from Bank")
     fun getAllBanks() : Flow<List<Bank>>
+
+    @Query("select * from Bank where accountNumber = :accountNum OR name = :bankName")
+    suspend fun checkBank(accountNum : Long , bankName : String) : List<Bank>
+
+    @Query("select * from Bank where bId = :bankId")
+    suspend fun getBankById(bankId: Int): Bank
 }

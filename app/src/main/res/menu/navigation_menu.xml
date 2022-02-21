@@ -6,12 +6,12 @@
         android:title="check list"
         android:icon="@drawable/ic_round_list"/>
     <item
-        android:id="@+id/bankFragment"
+        android:id="@+id/bankListFragment"
         android:title="banks"
         android:icon="@drawable/ic_round_bank"
         />
     <item
-        android:id="@+id/personFragment"
+        android:id="@+id/personListFragment"
         android:title="persons"
         android:icon="@drawable/ic_round_person"
         />

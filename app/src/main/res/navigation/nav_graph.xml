@@ -8,12 +8,24 @@
         android:id="@+id/checkFragment"
         android:name="aliSafavi.check.check.CheckFragment"
         android:label="fragment_check"
-        tools:layout="@layout/fragment_check" />
+        tools:layout="@layout/fragment_check" >
+        <action
+            android:id="@+id/action_checkFragment_to_personFragment"
+            app:destination="@id/personFragment" />
+        <action
+            android:id="@+id/action_checkFragment_to_bankFragment"
+            app:destination="@id/bankFragment" />
+    </fragment>
     <fragment
         android:id="@+id/bankFragment"
         android:name="aliSafavi.check.bank.BankFragment"
         android:label="fragment_bank"
-        tools:layout="@layout/fragment_bank" />
+        tools:layout="@layout/fragment_bank" >
+        <argument
+            android:name="bankId"
+            app:argType="integer"
+            android:defaultValue="0"/>
+    </fragment>
     <fragment
         android:id="@+id/personFragment"
         android:name="aliSafavi.check.person.PersonFragment"
@@ -28,10 +40,25 @@
             android:id="@+id/action_checkListFragment_to_checkFragment"
             app:destination="@id/checkFragment" />
         <action
-            android:id="@+id/action_checkListFragment_to_personFragment"
-            app:destination="@id/personFragment" />
+            android:id="@+id/action_checkListFragment_to_bankListFragment"
+            app:destination="@id/bankListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/personListFragment"
+        android:name="aliSafavi.check.person.PersonFragment"
+        android:label="fragment_person_list"
+        tools:layout="@layout/fragment_person_list" >
         <action
-            android:id="@+id/action_checkListFragment_to_bankFragment"
+            android:id="@+id/action_personListFragment_to_personFragment"
+            app:destination="@id/personFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bankListFragment"
+        android:name="aliSafavi.check.bank.BankListFragment"
+        android:label="fragment_bank_list"
+        tools:layout="@layout/fragment_bank_list" >
+        <action
+            android:id="@+id/action_bankListFragment_to_bankFragment"
             app:destination="@id/bankFragment" />
     </fragment>
 </navigation>
