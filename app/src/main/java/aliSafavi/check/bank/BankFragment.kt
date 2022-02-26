@@ -3,6 +3,7 @@ package aliSafavi.check.bank
 import aliSafavi.check.R
 import aliSafavi.check.databinding.FragmentBankBinding
 import aliSafavi.check.model.Bank
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -41,31 +42,36 @@ class BankFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentBankBinding.inflate(inflater,container,false)
+        binding = FragmentBankBinding.inflate(inflater,container,false).also {
+            it.viewModel = viewModel
+            it.lifecycleOwner=this
+        }
 
         initView()
         setupButtons()
 
-        args.bankId?.let {
-            editMode(it)
-        }
+
+        if (args.bankId !=0)
+            editMode(args.bankId)
+
         handelMessage()
 
         return binding.root
     }
 
     private fun editMode(bankId: Int) {
-//        TODO("I should continue from here")
-        val oldBank = viewModel.getBankById(bankId)
-
-        btn_save_edit.apply {
+        viewModel.initBank(bankId)
+        btn_save_edit.run {
             text = "edit"
-            setBackgroundColor(Color.BLUE)
+//            setBackgroundColor(R.color.purple_200)
+//            val oBank : Bank= viewModel.bank.value
 //            setOnClickListener {
-//                val bankName = bankName.text.toString()
-//                val bankNumber = bankNumber.text.toString().toLong()
-//                val bank = Bank(bankId,bankName,bankNumber,oldBank.)
-//                viewModel.update()
+//                val nBank = Bank(
+//                    bId = oBank.bId,
+//                    name = oBank.name,
+//                    accountNumber = oBank.accountNumber
+//                )
+//                viewModel.update(nBank)
 //            }
         }
     }
@@ -76,7 +82,7 @@ class BankFragment : Fragment() {
             }
             else{
                 Toast.makeText(activity,"your bank number or account number is duplicate",Toast.LENGTH_SHORT).show()
-                exit()
+//                exit()
             }
         })
     }
@@ -100,10 +106,13 @@ class BankFragment : Fragment() {
         bankNumber = binding.etBankNumber
         btn_cancel = binding.btnCancel
         btn_save_edit = binding.btnSaveEdit
+        binding.lifecycleOwner = this
     }
 
     fun exit(){
-//        Na
+//        editMode(1)
+        viewModel.initBank(1)
+
     }
 
 

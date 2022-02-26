@@ -2,6 +2,7 @@ package aliSafavi.check.repository
 
 import aliSafavi.check.data.BankDao
 import aliSafavi.check.model.Bank
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -21,7 +22,6 @@ class BankRepository @Inject constructor(
     suspend fun checkBank(bank: Bank) =
         bankDao.checkBank(accountNum = bank.accountNumber, bankName = bank.name)
 
-    suspend fun getBankbyId(bankId: Int): Bank = bankDao.getBankById(bankId)
-
+    suspend fun getBankbyId(bankId: Int) = bankDao.getBankById(bankId)
 
 }

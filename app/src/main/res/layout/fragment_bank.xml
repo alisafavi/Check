@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="aliSafavi.check.bank.BankViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,19 +29,23 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="100dp"
                 android:scaleType="fitXY"
-                app:srcCompat="@mipmap/spiderman" />
+                app:srcCompat="@drawable/ic_round_person" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="?attr/textInputOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp">
+                android:layout_marginTop="40dp"
+                android:focusable="auto"
+                app:counterEnabled="false">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_bank_name"
                     android:layout_width="match_parent"
-                    android:hint="enter your bank name"
                     android:layout_height="wrap_content"
-                    android:inputType="none" />
+                    android:hint="enter your bank name"
+                    android:inputType="text"
+                    android:text="@{viewModel.bank.name}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -53,6 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="enter your account number"
+                    android:text="@{Long.toString(viewModel.bank.accountNumber)}"
                     android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,7 +90,6 @@
                 android:text="save / edit"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
