@@ -38,10 +38,13 @@ class BankFragment : Fragment() {
     private lateinit var btn_cancel : Button
     private lateinit var btn_save_edit : Button
 
+    private var argBankId=0
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        argBankId = args.bankId
         binding = FragmentBankBinding.inflate(inflater,container,false).also {
             it.viewModel = viewModel
             it.lifecycleOwner=this
@@ -51,7 +54,7 @@ class BankFragment : Fragment() {
         setupButtons()
 
 
-        if (args.bankId !=0)
+        if (argBankId !=0)
             editMode(args.bankId)
 
         handelMessage()
@@ -63,16 +66,15 @@ class BankFragment : Fragment() {
         viewModel.initBank(bankId)
         btn_save_edit.run {
             text = "edit"
-//            setBackgroundColor(R.color.purple_200)
-//            val oBank : Bank= viewModel.bank.value
-//            setOnClickListener {
-//                val nBank = Bank(
-//                    bId = oBank.bId,
-//                    name = oBank.name,
-//                    accountNumber = oBank.accountNumber
-//                )
-//                viewModel.update(nBank)
-//            }
+            setBackgroundColor(R.color.purple_200)
+            setOnClickListener {
+                val nBank = Bank(
+                    bId = argBankId,
+                    name= bankName.text.toString().trim(),
+                    accountNumber = bankNumber.text.toString().trim().toLong(),
+                )
+                viewModel.update(nBank)
+            }
         }
     }
     private fun handelMessage() {
