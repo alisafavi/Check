@@ -30,7 +30,12 @@
         android:id="@+id/personFragment"
         android:name="aliSafavi.check.person.PersonFragment"
         android:label="fragment_person"
-        tools:layout="@layout/fragment_person" />
+        tools:layout="@layout/fragment_person" >
+        <argument
+            android:name="personId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
     <fragment
         android:id="@+id/checkListFragment"
         android:name="aliSafavi.check.check_list.CheckListFragment"
@@ -51,7 +56,7 @@
     </fragment>
     <fragment
         android:id="@+id/personListFragment"
-        android:name="aliSafavi.check.person.PersonFragment"
+        android:name="aliSafavi.check.person.PersonListFragment"
         android:label="fragment_person_list"
         tools:layout="@layout/fragment_person_list" >
         <action

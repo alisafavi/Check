@@ -32,6 +32,10 @@ interface PersonDao{
     suspend fun update(person: Person)
     @Query("select * from Person")
     fun getAllPersons() : Flow<List<Person>>
+    @Query("select * from Person where pId = :id")
+    suspend fun getPersonById(id : Int) : Person
+    @Query("select * from Person where name = :name OR phoneNumber = :pNum")
+    suspend fun checkPerson(name : String,pNum : Long?) : List<Person>
 }
 
 @Dao

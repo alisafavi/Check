@@ -10,9 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.Button
-import android.widget.ListPopupWindow
-import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -20,7 +17,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
 
@@ -57,14 +53,14 @@ class BankFragment : Fragment() {
 
 
         if (args.bankId != 0)
-            editMode(args.bankId)
+            updateMode(args.bankId)
 
         handelMessage()
 
         return binding.root
     }
 
-    private fun editMode(bankId: Int) {
+    private fun updateMode(bankId: Int) {
         viewModel.initBank(bankId)
         btnSaveEdit.run {
             text = "edit"

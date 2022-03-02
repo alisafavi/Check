@@ -19,8 +19,12 @@ class BankViewModel @Inject constructor(
     private val repository: BankRepository
 ) : ViewModel() {
 
-    val error = MutableLiveData<String>()
-    val navigateBack = MutableLiveData<Boolean>()
+    private val _error = MutableLiveData<String>()
+    val error : LiveData<String>
+        get() = _error
+    private val _navigateBack = MutableLiveData<Boolean>()
+    val navigateBack : LiveData<Boolean>
+        get() = _navigateBack
     private val _bank = MutableLiveData<Bank>()
     val bank: LiveData<Bank>
         get() = _bank
@@ -30,10 +34,10 @@ class BankViewModel @Inject constructor(
             if (bank.bId == 0) {
                 if (repository.checkBank(bank).size == 0) {
                     repository.newBank(bank)
-                    error.value = "new bank created"
-                    navigateBack.value = true
+                    _error.value = "new bank created"
+                    _navigateBack.value = true
                 } else {
-                    error.value = "your bank number or account number is duplicate"
+                    _error.value = "your bank number or account number is duplicate"
                 }
             } else {
                 repository.update(bank)
@@ -53,8 +57,8 @@ class BankViewModel @Inject constructor(
     fun update(bank: Bank){
         viewModelScope.launch {
             repository.update(bank)
-            error.value = "your bank edited"
-            navigateBack.value=true
+            _error.value = "your bank edited"
+            _navigateBack.value=true
         }
     }
 
