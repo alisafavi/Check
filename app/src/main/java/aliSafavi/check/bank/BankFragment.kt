@@ -3,58 +3,60 @@ package aliSafavi.check.bank
 import aliSafavi.check.R
 import aliSafavi.check.databinding.FragmentBankBinding
 import aliSafavi.check.model.Bank
-import android.annotation.SuppressLint
-import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
+import android.widget.ListPopupWindow
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
+import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.shape.CornerFamily
-import com.google.android.material.shape.ShapeAppearanceModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.runBlocking
+
 
 @AndroidEntryPoint
 class BankFragment : Fragment() {
 
-    private lateinit var binding : FragmentBankBinding
-    private val viewModel : BankViewModel by viewModels()
-    private val args : BankFragmentArgs by navArgs()
+    companion object {
+        val BankLogoDir = "bank"
+    }
 
-    private lateinit var bankImg : ShapeableImageView
-    private lateinit var bankName : TextInputEditText
-    private lateinit var bankNumber : TextInputEditText
-    private lateinit var btn_cancel : Button
-    private lateinit var btn_save_edit : Button
+    private lateinit var binding: FragmentBankBinding
+    private val viewModel: BankViewModel by viewModels()
+    private val args: BankFragmentArgs by navArgs()
 
-    private var argBankId=0
+    private lateinit var etBankName: AutoCompleteTextView
+    private lateinit var etAccountName: TextInputEditText
+    private lateinit var etBankNumber: TextInputEditText
+    private lateinit var btnCancel: Button
+    private lateinit var btnSaveEdit: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        argBankId = args.bankId
-        binding = FragmentBankBinding.inflate(inflater,container,false).also {
+
+        binding = FragmentBankBinding.inflate(inflater, container, false).also {
             it.viewModel = viewModel
-            it.lifecycleOwner=this
+            it.lifecycleOwner = this
         }
 
         initView()
         setupButtons()
 
 
-        if (argBankId !=0)
+        if (args.bankId != 0)
             editMode(args.bankId)
 
         handelMessage()
@@ -64,58 +66,87 @@ class BankFragment : Fragment() {
 
     private fun editMode(bankId: Int) {
         viewModel.initBank(bankId)
-        btn_save_edit.run {
+        btnSaveEdit.run {
             text = "edit"
             setBackgroundColor(R.color.purple_200)
             setOnClickListener {
-                val nBank = Bank(
-                    bId = argBankId,
-                    name= bankName.text.toString().trim(),
-                    accountNumber = bankNumber.text.toString().trim().toLong(),
+                viewModel.update(
+                    Bank(
+                        bId = args.bankId,
+                        name = etAccountName.text.toString().trim(),
+                        accountNumber = etBankNumber.text.toString().trim().toLong(),
+                        img = etBankName.text.toString() + ".png"
+                    )
                 )
-                viewModel.update(nBank)
             }
         }
     }
+
     private fun handelMessage() {
         viewModel.error.observe(viewLifecycleOwner, Observer {
-            if (it){
-                Toast.makeText(requireActivity(),"new bank created",Toast.LENGTH_SHORT).show()
-            }
-            else{
-                Toast.makeText(activity,"your bank number or account number is duplicate",Toast.LENGTH_SHORT).show()
-//                exit()
-            }
+            Snackbar.make(
+                requireActivity().findViewById(android.R.id.content),
+                it,
+                Snackbar.LENGTH_LONG
+            ).show()
         })
     }
 
     private fun setupButtons() {
-        binding.btnCancel.setOnClickListener {
+        btnCancel.setOnClickListener {
             exit()
         }
-        binding.btnSaveEdit.setOnClickListener {
-            viewModel.save_edit(Bank(name = binding.etBankName.text.toString(), accountNumber = binding.etBankNumber.text.toString().toLong()))
+        btnSaveEdit.setOnClickListener {
+            viewModel.save_edit(
+                Bank(
+                    name = etAccountName.text.toString(),
+                    accountNumber = binding.etBankNumber.text.toString().toLong(),
+                    img = etBankName.text.toString().trim().plus(".png")
+                )
+            )
         }
     }
 
     private fun initView() {
-        bankImg = binding.bankImg.apply {
-            shapeAppearanceModel = ShapeAppearanceModel.builder()
-                .setAllCornerSizes(ShapeAppearanceModel.PILL)
-                .build()
+        etBankName = binding.etBankName.apply {
+            val data = ArrayList<BankLogo>()
+            runBlocking {
+                requireContext().assets.list(BankLogoDir)?.map {
+                    val inputStream = requireContext().assets.open(BankLogoDir + "/" + it)
+                    val drawable = Drawable.createFromStream(inputStream, null)
+                    data.add(
+                        BankLogo(
+                            it.removeSuffix(".png"),
+                            drawable
+                        )
+                    )
+                }
+            }
+            val adapter = BankLogoAdapter(requireContext(), R.layout.bank_logo_item, data)
+            setAdapter(adapter)
+            setOnItemClickListener { adapterView, view, position, l ->
+                setText(data.get(position).bankName.removeSuffix(".png"), false)
+                data.get(position).bankImgSrc?.let {
+                    binding.bankImg.setImageDrawable(it)
+                }
+            }
+            showDropDown()
         }
-        bankName = binding.etBankName
-        bankNumber = binding.etBankNumber
-        btn_cancel = binding.btnCancel
-        btn_save_edit = binding.btnSaveEdit
+
+        etAccountName = binding.etAccountName
+        etBankNumber = binding.etBankNumber
+        btnCancel = binding.btnCancel
+        btnSaveEdit = binding.btnSaveEdit
         binding.lifecycleOwner = this
+
+        viewModel.navigateBack.observe(viewLifecycleOwner, Observer {
+            if (it)
+                exit()
+        })
     }
 
-    fun exit(){
-//        editMode(1)
-        viewModel.initBank(1)
-
+    private fun exit() {
+        findNavController().navigateUp()
     }
-
 
 }

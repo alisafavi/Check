@@ -28,7 +28,7 @@ class CheckListFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_check_list, container, false)
 
         view.findViewById<Button>(R.id.btn).setOnClickListener {
-            it.findNavController().navigate(R.id.action_checkListFragment_to_bankListFragment)
+            it.findNavController().navigate(R.id.action_checkListFragment_to_bankFragment)
         }
 
         return view

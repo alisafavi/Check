@@ -1,11 +1,18 @@
 <resources>
     <string name="app_name">Check</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="acocountNumber">%d</string>
     <array name="bank_name">
         <item>mellat</item>
         <item>melli</item>
         <item>tejarat</item>
         <item>saman</item>
     </array>
+
+    <string-array name="cat_list_popup_window_content" translatable="false">
+        <item>Item 1</item>
+        <item>Item 2</item>
+        <item>Item 3</item>
+        <item>Item 4</item>
+    </string-array>
 </resources>

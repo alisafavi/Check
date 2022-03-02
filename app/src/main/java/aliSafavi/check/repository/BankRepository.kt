@@ -24,4 +24,6 @@ class BankRepository @Inject constructor(
 
     suspend fun getBankbyId(bankId: Int) = bankDao.getBankById(bankId)
 
+    fun getAllBanks() = bankDao.getAllBanks()
+
 }
