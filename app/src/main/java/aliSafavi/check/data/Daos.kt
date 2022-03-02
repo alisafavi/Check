@@ -31,7 +31,7 @@ interface PersonDao{
     @Update
     suspend fun update(person: Person)
     @Query("select * from Person")
-    fun getAllPersons() : Flow<List<Person>>
+    suspend fun getAllPersons() : List<Person>
     @Query("select * from Person where pId = :id")
     suspend fun getPersonById(id : Int) : Person
     @Query("select * from Person where name = :name OR phoneNumber = :pNum")
