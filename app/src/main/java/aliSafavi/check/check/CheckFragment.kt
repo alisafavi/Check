@@ -1,17 +1,20 @@
 package aliSafavi.check.check
 
 import aliSafavi.check.databinding.FragmentCheckBinding
-import aliSafavi.check.model.FullCheck
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
+import com.xdev.arch.persiancalendar.datepicker.MaterialDatePicker
+import com.xdev.arch.persiancalendar.datepicker.MaterialPickerOnPositiveButtonClickListener
+import com.xdev.arch.persiancalendar.datepicker.calendar.PersianCalendar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -52,12 +55,29 @@ class CheckFragment : Fragment() {
     private fun initView() {
         etCheckNumber = binding.etCheckNumber
         etCheckAmount = binding.etCheckAmount
-        etCheckDate = binding.etCheckDate
+        etCheckDate = binding.etCheckDate.apply {
+            setOnClickListener { getDate() }
+        }
         etCheckReciver = binding.etCheckReciver
         etCheckAccount = binding.etCheckAccount
         btnSave = binding.btnOk.apply {
-            setOnClickListener { save() }
+            setOnClickListener { getDate() }
         }
+    }
+
+    fun getDate() {
+        val datePicker = MaterialDatePicker.Builder
+            .datePicker()
+            .setTitleText("تاریخ را انتخاب کنید.")
+            .build()
+
+        datePicker.show(childFragmentManager, "sss")
+        datePicker.addOnPositiveButtonClickListener(object :
+            MaterialPickerOnPositiveButtonClickListener<Long?> {
+            override fun onPositiveButtonClick(selection: Long?) {
+                etCheckDate.setText(PersianCalendar(selection!!).toString())
+            }
+        })
     }
 
     private fun save() {
@@ -72,5 +92,4 @@ class CheckFragment : Fragment() {
             )
         )
     }
-
 }

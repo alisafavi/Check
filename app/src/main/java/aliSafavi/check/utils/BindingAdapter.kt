@@ -13,6 +13,7 @@ import androidx.databinding.BindingMethod
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
+import com.xdev.arch.persiancalendar.datepicker.calendar.PersianCalendar
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream
@@ -47,6 +48,7 @@ fun withOutFiltering(view: MaterialAutoCompleteTextView, text :String?){
 @BindingAdapter("convertDate")
 fun convertDate(view: TextInputEditText,date : Long?){
     date?.let {
-        view.setText(it.toString())
+        val date = PersianCalendar(date)
+        view.setText(date.toString())
     }
 }
