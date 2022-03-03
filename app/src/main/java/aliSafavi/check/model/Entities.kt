@@ -38,7 +38,7 @@ data class Bank (
     val img : String? = null
 )
 
-data class fullCheck(
+data class FullCheck(
     @Embedded
     val check :Check,
     @Relation(

@@ -43,3 +43,10 @@ fun withOutFiltering(view: MaterialAutoCompleteTextView, text :String?){
         view.setText(it.removeSuffix(".png"),false)
     }
 }
+
+@BindingAdapter("convertDate")
+fun convertDate(view: TextInputEditText,date : Long?){
+    date?.let {
+        view.setText(it.toString())
+    }
+}

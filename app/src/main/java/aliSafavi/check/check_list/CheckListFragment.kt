@@ -1,6 +1,7 @@
 package aliSafavi.check.check_list
 
 import aliSafavi.check.R
+import aliSafavi.check.databinding.FragmentCheckListBinding
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class CheckListFragment : Fragment() {
 
     private val viewModel : CheckListViewModel by viewModels()
+    private lateinit var binding : FragmentCheckListBinding
 
 
     override fun onCreateView(
@@ -25,13 +27,13 @@ class CheckListFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
-        val view = inflater.inflate(R.layout.fragment_check_list, container, false)
+        binding = FragmentCheckListBinding.inflate(inflater, container, false)
 
-        view.findViewById<Button>(R.id.btn).setOnClickListener {
-            it.findNavController().navigate(R.id.action_checkListFragment_to_bankFragment)
+        binding.btnNewCheck.setOnClickListener {
+            it.findNavController().navigate(R.id.action_checkListFragment_to_checkFragment)
         }
 
-        return view
+        return binding.root
     }
 
 }

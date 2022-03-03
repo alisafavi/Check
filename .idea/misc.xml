@@ -13,9 +13,9 @@
         <entry key="app/src/main/res/layout/bank_logo_item.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/fragment_bank.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_bank_list.xml" value="0.35625" />
-        <entry key="app/src/main/res/layout/fragment_check.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_check.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_check_details.xml" value="0.35625" />
-        <entry key="app/src/main/res/layout/fragment_check_list.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/fragment_check_list.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_person.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_person_list.xml" value="0.18177083333333333" />
         <entry key="app/src/main/res/layout/list_popup_window_item.xml" value="0.35625" />

@@ -19,7 +19,7 @@ class PersonRepository @Inject constructor(
 
     suspend fun checkPerson(person: Person) = personDao.checkPerson(person.name,person.phoneNumber)
 
-    suspend fun getPersonById(id : Int) = personDao.getPersonById(id)
+    suspend fun getPersonById(id : Int) = personDao.getById(id)
 
     suspend fun getAllPersons(): List<Person> = personDao.getAllPersons()
 }

@@ -15,6 +15,10 @@
         <action
             android:id="@+id/action_checkFragment_to_bankFragment"
             app:destination="@id/bankFragment" />
+        <argument
+            android:name="checkId"
+            app:argType="long"
+            android:defaultValue="0L" />
     </fragment>
     <fragment
         android:id="@+id/bankFragment"
@@ -50,9 +54,6 @@
         <action
             android:id="@+id/action_checkListFragment_to_personListFragment"
             app:destination="@id/personListFragment" />
-        <action
-            android:id="@+id/action_checkListFragment_to_bankFragment"
-            app:destination="@id/bankFragment" />
     </fragment>
     <fragment
         android:id="@+id/personListFragment"
