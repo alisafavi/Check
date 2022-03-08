@@ -23,9 +23,7 @@ class BankListViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            repository.getAllBanks().collect {
-                _banks.value = it
-            }
+            _banks.value = repository.getAllBanks()
         }
     }
 
