@@ -1,4 +1,4 @@
-package aliSafavi.check.repository
+package aliSafavi.check.data.repository
 
 import aliSafavi.check.data.PersonDao
 import aliSafavi.check.model.Person

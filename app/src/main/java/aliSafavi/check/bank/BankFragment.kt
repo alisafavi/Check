@@ -1,8 +1,11 @@
 package aliSafavi.check.bank
 
+import aliSafavi.check.EventObserver
 import aliSafavi.check.R
 import aliSafavi.check.databinding.FragmentBankBinding
 import aliSafavi.check.model.Bank
+import aliSafavi.check.utils.setupSnackbar
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.Button
+import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -42,66 +46,34 @@ class BankFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        binding = FragmentBankBinding.inflate(inflater, container, false).also {
+        binding = FragmentBankBinding.inflate(inflater).also {
             it.viewModel = viewModel
-            it.lifecycleOwner = this
         }
 
-        initView()
-        setupButtons()
-
-
-        if (args.bankId != 0)
-            updateMode(args.bankId)
-
-        handelMessage()
-
+        binding.lifecycleOwner = this.viewLifecycleOwner
         return binding.root
     }
 
-    private fun updateMode(bankId: Int) {
-        viewModel.initBank(bankId)
-        btnSaveEdit.run {
-            text = "edit"
-            setBackgroundColor(R.color.purple_200)
-            setOnClickListener {
-                viewModel.update(
-                    Bank(
-                        bId = args.bankId,
-                        name = etAccountName.text.toString().trim(),
-                        accountNumber = etBankNumber.text.toString().trim().toLong(),
-                        img = etBankName.text.toString() + ".png"
-                    )
-                )
-            }
-        }
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initView()
+        setupButtons()
+        setupNavigation()
+        setupSnakbar()
 
-    private fun handelMessage() {
-        viewModel.error.observe(viewLifecycleOwner, Observer {
-            Snackbar.make(
-                requireActivity().findViewById(android.R.id.content),
-                it,
-                Snackbar.LENGTH_LONG
-            ).show()
-        })
+        viewModel.start(args.bankId)
     }
 
     private fun setupButtons() {
         btnCancel.setOnClickListener {
             exit()
         }
-        btnSaveEdit.setOnClickListener {
-            viewModel.save_edit(
-                Bank(
-                    name = etAccountName.text.toString(),
-                    accountNumber = binding.etBankNumber.text.toString().toLong(),
-                    img = etBankName.text.toString().trim().plus(".png")
-                )
-            )
+        btnSaveEdit.apply {
+            setOnClickListener { save() }
+            if (args.bankId != 0)
+                text = "edit"
         }
     }
+
 
     private fun initView() {
         etBankName = binding.etBankName.apply {
@@ -125,6 +97,7 @@ class BankFragment : Fragment() {
                 data.get(position).bankImgSrc?.let {
                     binding.bankImg.setImageDrawable(it)
                 }
+                error=null
             }
             showDropDown()
         }
@@ -133,16 +106,62 @@ class BankFragment : Fragment() {
         etBankNumber = binding.etBankNumber
         btnCancel = binding.btnCancel
         btnSaveEdit = binding.btnSaveEdit
-        binding.lifecycleOwner = this
+    }
 
-        viewModel.navigateBack.observe(viewLifecycleOwner, Observer {
+    private fun validateForm(): Boolean {
+        var status = true
+        if (etBankName.text.toString().isEmpty()) {
+            etBankName.error = getString(R.string.empty_error)
+            status = false
+        }
+        if (etAccountName.text.toString().isEmpty()) {
+            etAccountName.error = getString(R.string.empty_error)
+            status = false
+        }
+        if(etBankNumber.text.toString().isEmpty()){
+            etBankNumber.error = getString(R.string.empty_error)
+            status = false
+        }else if (!etBankNumber.text.toString().isDigitsOnly()) {
+            etBankNumber.error = getString(R.string.invalid_value_error)
+            status = false
+        }
+        return status
+    }
+
+    private fun save() {
+        if (validateForm()) {
+            try {
+                viewModel.save(
+                    Bank(
+                        bId = args.bankId,
+                        name = etAccountName.text.toString(),
+                        accountNumber = binding.etBankNumber.text.toString().toLong(),
+                        img = etBankName.text.toString().trim().plus(".png")
+                    )
+                )
+            } catch (e: Exception) {
+
+            }
+        }
+    }
+
+    private fun setupNavigation() {
+        viewModel.navigateUp.observe(viewLifecycleOwner, Observer {
             if (it)
                 exit()
         })
     }
 
-    private fun exit() {
-        findNavController().navigateUp()
+    private fun setupSnakbar() {
+        viewModel.bankUpdatedEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                view?.setupSnackbar(it)
+            }
+        )
     }
 
+    fun exit() {
+        findNavController().navigateUp()
+    }
 }

@@ -1,7 +1,7 @@
 package aliSafavi.check.person
 
 import aliSafavi.check.model.Person
-import aliSafavi.check.repository.PersonRepository
+import aliSafavi.check.data.repository.PersonRepository
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

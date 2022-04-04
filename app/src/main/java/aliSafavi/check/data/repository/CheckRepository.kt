@@ -1,9 +1,8 @@
-package aliSafavi.check.repository
+package aliSafavi.check.data.repository
 
 import aliSafavi.check.data.BankDao
 import aliSafavi.check.data.FullCheckDao
 import aliSafavi.check.data.PersonDao
-import aliSafavi.check.model.Bank
 import aliSafavi.check.model.Check
 import aliSafavi.check.model.FullCheck
 import javax.inject.Inject
@@ -16,7 +15,7 @@ class CheckRepository @Inject constructor(
     private val personDao: PersonDao
 ) {
 
-    suspend fun unPaidChecks() = checkDao.getAllUnPaidChecks()
+    suspend fun getUnPassedChecks() = checkDao.getUnPassedChecks()
     suspend fun insert(check: Check) {
         checkDao.insert(check)
     }

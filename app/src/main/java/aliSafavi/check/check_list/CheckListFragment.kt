@@ -3,17 +3,17 @@ package aliSafavi.check.check_list
 import aliSafavi.check.R
 import aliSafavi.check.databinding.FragmentCheckListBinding
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.xdev.arch.persiancalendar.datepicker.calendar.PersianCalendar
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,6 +21,7 @@ class CheckListFragment : Fragment() {
 
     private val viewModel : CheckListViewModel by viewModels()
     private lateinit var binding : FragmentCheckListBinding
+    private lateinit var checkList : RecyclerView
 
 
     override fun onCreateView(
@@ -31,21 +32,29 @@ class CheckListFragment : Fragment() {
 
         binding = FragmentCheckListBinding.inflate(inflater, container, false)
 
+        checkList = binding.checkList.apply {
+            layoutManager=GridLayoutManager(requireContext(),1)
+        }
         binding.btnNewCheck.setOnClickListener {
             it.findNavController().navigate(R.id.action_checkListFragment_to_checkFragment)
         }
 
-        getDate()
+        setupList()
 
         return binding.root
     }
 
-    private fun getDate() {
-        val p = PersianCalendar()
-        p.timeInMillis=System.currentTimeMillis()
+    private fun setupList() {
+        val adapter = CheckListAdapter(OnCheckItemClickListener {
+            val bundel = bundleOf("checkId" to it)
+            findNavController().navigate(R.id.action_checkListFragment_to_checkFragment,bundel)
+        })
 
-        Log.i("TAGG",p.toString())
-
+        checkList.adapter=adapter
+        viewModel.getChecks()
+        viewModel.checks.observe(viewLifecycleOwner, Observer {
+            adapter.submitList(it)
+        })
 
     }
 

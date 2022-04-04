@@ -1,66 +1,81 @@
 package aliSafavi.check.bank
 
-import aliSafavi.check.data.BankDao
+import aliSafavi.check.Event
+import aliSafavi.check.R
 import aliSafavi.check.model.Bank
 import aliSafavi.check.repository.BankRepository
-import android.util.Log
+import android.text.BoringLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
-import kotlin.system.measureTimeMillis
 
 @HiltViewModel
 class BankViewModel @Inject constructor(
     private val repository: BankRepository
 ) : ViewModel() {
 
-    private val _error = MutableLiveData<String>()
-    val error : LiveData<String>
-        get() = _error
-    private val _navigateBack = MutableLiveData<Boolean>()
-    val navigateBack : LiveData<Boolean>
-        get() = _navigateBack
+    private val _snackbarText = MutableLiveData<Event<Int>>()
+    val snackbarText: LiveData<Event<Int>> = _snackbarText
     private val _bank = MutableLiveData<Bank>()
     val bank: LiveData<Bank>
         get() = _bank
+    private val _bankUpdatedEvent = MutableLiveData<Event<Int>>()
+    val bankUpdatedEvent: LiveData<Event<Int>> = _bankUpdatedEvent
+    private val _navigateUp = MutableLiveData<Boolean>()
+    val navigateUp: LiveData<Boolean>
+        get() = _navigateUp
 
-    fun save_edit(bank: Bank) {
-        viewModelScope.launch {
-            if (bank.bId == 0) {
-                if (repository.checkBank(bank).size == 0) {
-                    repository.newBank(bank)
-                    _error.value = "new bank created"
-                    _navigateBack.value = true
-                } else {
-                    _error.value = "your bank number or account number is duplicate"
-                }
-            } else {
-                repository.update(bank)
-            }
+
+    private var bankId: Int? = null
+
+    fun start(bankId: Int?) {
+        this.bankId = bankId
+        if (bankId == null) {
+            // No need to populate, it's a new bak
+            return
         }
-    }
-
-    fun initBank(bankId: Int) {
-        if (bankId != 0)
-            viewModelScope.launch {
-                repository.getBankbyId(bankId)?.let {
+        viewModelScope.launch {
+            repository.getBank(bankId).let { result ->
+                result.onSuccess {
                     _bank.value = it
                 }
             }
-    }
-
-    fun update(bank: Bank){
-        viewModelScope.launch {
-            repository.update(bank)
-            _error.value = "your bank edited"
-            _navigateBack.value=true
         }
     }
 
+    fun save(newbank: Bank) {
+        if (bankId == 0) {
+            createCheck(Bank(newbank.name, newbank.accountNumber, newbank.img))
+        } else {
+            updateBank(Bank(newbank.name, newbank.accountNumber, newbank.img, bankId!!))
+        }
 
+    }
+
+    private fun updateBank(bank: Bank) {
+        if (bank.bId == null)
+            throw RuntimeException("updateBank() was called but bank is new.")
+        viewModelScope.launch {
+            repository.saveBank(bank)
+            _bankUpdatedEvent.value = Event(R.string.successfully_update_bank_message)
+            _navigateUp.value=true
+        }
+    }
+
+    private fun createCheck(newBank: Bank) = viewModelScope.launch {
+        repository.saveBank(newBank).run {
+            onSuccess {
+                _bankUpdatedEvent.value = Event(it)
+                _navigateUp.value=true
+            }
+            onFailure {
+                _bankUpdatedEvent.value = Event(it.localizedMessage.toInt())
+            }
+        }
+
+    }
 }

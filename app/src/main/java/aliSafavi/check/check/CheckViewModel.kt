@@ -2,12 +2,11 @@ package aliSafavi.check.check
 
 import aliSafavi.check.model.Check
 import aliSafavi.check.model.FullCheck
+import aliSafavi.check.data.repository.CheckRepository
+import aliSafavi.check.data.repository.PersonRepository
 import aliSafavi.check.repository.BankRepository
-import aliSafavi.check.repository.CheckRepository
-import aliSafavi.check.repository.PersonRepository
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

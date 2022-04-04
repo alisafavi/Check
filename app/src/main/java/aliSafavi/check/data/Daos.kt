@@ -20,8 +20,8 @@ interface FullCheckDao {
     suspend fun update(check: Check)
 
     @Transaction
-    @Query("select * from `Check` where isPaid = 'false'")
-    fun getAllUnPaidChecks(): LiveData<List<FullCheck>>
+    @Query("select * from `Check` where isPaid = '0' order by date")
+    fun getUnPassedChecks(): Flow<List<FullCheck>>
 
     @Query("select * from `check` where cId=:checkId")
     suspend fun getById(checkId: Long): FullCheck
@@ -54,7 +54,7 @@ interface PersonDao {
 @Dao
 interface BankDao {
     @Insert
-    suspend fun insert(bank: Bank)
+    suspend fun insertBank(bank: Bank)
 
     @Delete
     suspend fun delete(bank: Bank)

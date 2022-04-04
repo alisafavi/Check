@@ -31,11 +31,11 @@ data class Person (
 
 @Entity
 data class Bank (
-    @PrimaryKey(autoGenerate = true)
-    val bId: Int=0,
     var name : String,
     val accountNumber : Long,
-    val img : String? = null
+    val img : String? = null,
+    @PrimaryKey(autoGenerate = true)
+    val bId: Int=0
 )
 
 data class FullCheck(
