@@ -53,6 +53,7 @@
                 android:layout_marginTop="40dp"
                 android:focusable="true"
                 app:endIconMode="clear_text"
+                app:errorEnabled="true"
                 tools:ignore="MissingConstraints">
 
                 <com.google.android.material.textfield.TextInputEditText

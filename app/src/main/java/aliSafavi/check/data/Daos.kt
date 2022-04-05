@@ -24,8 +24,10 @@ interface FullCheckDao {
     fun getUnPassedChecks(): Flow<List<FullCheck>>
 
     @Query("select * from `check` where cId=:checkId")
-    suspend fun getById(checkId: Long): FullCheck
+    suspend fun getCheck(checkId: Long): FullCheck
 
+    @Query("select * from `Check` where number=:number")
+    suspend fun checkCheck(number: Long): List<Check>
 }
 
 @Dao
@@ -47,6 +49,7 @@ interface PersonDao {
 
     @Query("select * from Person where name = :name OR phoneNumber = :pNum")
     suspend fun checkPerson(name: String, pNum: Long?): List<Person>
+
     @Query("select * from Person where name =:personName")
     suspend fun getPersonByName(personName: String): Person
 

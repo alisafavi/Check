@@ -47,9 +47,9 @@ class PersonViewModel @Inject constructor(
 
     fun save(newPerson: Person) {
         if (personId == 0) {
-            createPerson(Person(newPerson.name,newPerson.phoneNumber))
+            createPerson(newPerson)
         } else {
-            updatePerson(Person(newPerson.name,newPerson.phoneNumber, personId!!))
+            updatePerson(newPerson)
         }
     }
 

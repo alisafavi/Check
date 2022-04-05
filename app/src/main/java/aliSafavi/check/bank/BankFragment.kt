@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.Button
+import android.widget.Toast
 import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -141,7 +142,7 @@ class BankFragment : Fragment() {
                     )
                 )
             } catch (e: Exception) {
-
+                Toast.makeText(requireContext(),e.toString(), Toast.LENGTH_SHORT).show()
             }
         }
     }

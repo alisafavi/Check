@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.core.text.isDigitsOnly
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -79,10 +80,7 @@ class PersonFragment : Fragment() {
             etPersonName.error = getString(R.string.empty_error)
             status = false
         }
-        if(etPersonPhoneNumber.text.toString().isEmpty()){
-            etPersonPhoneNumber.error = getString(R.string.empty_error)
-            status = false
-        }else if (!etPersonPhoneNumber.text.toString().isDigitsOnly()) {
+        if (!etPersonPhoneNumber.text.toString().isDigitsOnly() && !etPersonPhoneNumber.text.toString().isEmpty()) {
             etPersonPhoneNumber.error = getString(R.string.invalid_value_error)
             status = false
         }
@@ -96,11 +94,16 @@ class PersonFragment : Fragment() {
                     Person(
                         pId = args.personId,
                         name = etPersonName.text.toString(),
-                        phoneNumber = etPersonPhoneNumber.text.toString().trim()?.toLong()
+                        phoneNumber = etPersonPhoneNumber.text.toString().trim()?.let {
+                            if (!it.isEmpty())
+                                it.toLong()
+                            else
+                                null
+                        }
                     )
                 )
             } catch (e: Exception) {
-
+                Toast.makeText(requireContext(),e.toString(),Toast.LENGTH_SHORT).show()
             }
         }
     }

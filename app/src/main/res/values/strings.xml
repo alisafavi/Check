@@ -12,6 +12,11 @@
     <string name="duplicate_person_message">The person name or phone number is duplicate</string>
     <string name="successfully_update_person_message">person updated</string>
     <string name="erroe_message">some thing is wrong</string>
+    <string name="select_date">select date</string>
+    <string name="successfully_saved_check_message">check saved</string>
+    <string name="duplicate_check_message">check number is duplicate</string>
+    <string name="successfully_update_check_message">check updated</string>
+    <string name="select_time">select time</string>
     <array name="bank_name">
         <item>mellat</item>
         <item>melli</item>

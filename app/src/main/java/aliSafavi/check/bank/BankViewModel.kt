@@ -17,8 +17,6 @@ class BankViewModel @Inject constructor(
     private val repository: BankRepository
 ) : ViewModel() {
 
-    private val _snackbarText = MutableLiveData<Event<Int>>()
-    val snackbarText: LiveData<Event<Int>> = _snackbarText
     private val _bank = MutableLiveData<Bank>()
     val bank: LiveData<Bank>
         get() = _bank
@@ -48,9 +46,9 @@ class BankViewModel @Inject constructor(
 
     fun save(newbank: Bank) {
         if (bankId == 0) {
-            createBank(Bank(newbank.name, newbank.accountNumber, newbank.img))
+            createBank(newbank)
         } else {
-            updateBank(Bank(newbank.name, newbank.accountNumber, newbank.img, bankId!!))
+            updateBank(newbank)
         }
 
     }

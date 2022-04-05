@@ -10,14 +10,14 @@ import androidx.room.ForeignKey.CASCADE
     ]
 )
 data class Check(
-    @PrimaryKey(autoGenerate = true)
-    val cId: Long = 0,
-    var number: Long?,
+    var number: Long,
     var date: Long,
     var amount : Long,
     val isPaid : Boolean = false,
-    var personId: Int,
-    var bankId: Int
+    var personId: Int=0,
+    var bankId: Int=0,
+    @PrimaryKey(autoGenerate = true)
+    val cId: Long = 0
 )
 
 @Entity
