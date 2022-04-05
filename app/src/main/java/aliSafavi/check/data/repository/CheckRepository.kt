@@ -15,7 +15,7 @@ class CheckRepository @Inject constructor(
     private val personDao: PersonDao
 ) {
 
-    suspend fun getUnPassedChecks() = checkDao.getUnPassedChecks()
+    fun getUnPassedChecks() = checkDao.getUnPassedChecks()
     suspend fun insert(check: Check) {
         checkDao.insert(check)
     }

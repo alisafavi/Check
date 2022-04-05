@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,19 +29,6 @@ class PersonListFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentPersonListBinding.inflate(inflater, container, false)
 
-        runBlocking {
-            val persons = viewModel.getAllPersons()
-            val personsName = persons.map { it.name }
-
-            val adapter = ArrayAdapter<String>(requireContext(),android.R.layout.simple_list_item_1,personsName)
-            binding.personList.apply {
-                setAdapter(adapter)
-                setOnItemClickListener { adapterView, view, position, l ->
-                    val bundel = bundleOf("personId" to persons.get(position).pId)
-                    findNavController().navigate(R.id.action_personListFragment_to_personFragment,bundel)
-                }
-            }
-        }
 
         binding.btnNewPerson.setOnClickListener {
             findNavController().navigate(R.id.action_personListFragment_to_personFragment)
@@ -51,4 +38,19 @@ class PersonListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupList()
+    }
+
+    private fun setupList() {
+        val adapter=PersonListAdapter(PersonClickListener {
+            val bundel = bundleOf("personId" to it)
+            findNavController().navigate(R.id.action_personListFragment_to_personFragment,bundel)
+        })
+        binding.personList.adapter=adapter
+
+        viewModel.persons.observe(viewLifecycleOwner, Observer {
+            adapter.submitList(it)
+        })
+    }
 }

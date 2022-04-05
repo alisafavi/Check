@@ -4,7 +4,7 @@ import aliSafavi.check.model.Check
 import aliSafavi.check.model.FullCheck
 import aliSafavi.check.data.repository.CheckRepository
 import aliSafavi.check.data.repository.PersonRepository
-import aliSafavi.check.repository.BankRepository
+import aliSafavi.check.data.repository.BankRepository
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -52,7 +52,7 @@ class CheckViewModel @Inject constructor(
         return personRepository.getAllPersons().map { it.name }
     }
 
-    suspend fun getBankssName(): List<String> = bankRepository.getAllBanks().map { it.name }
+    suspend fun getBankssName(): List<String> = bankRepository.getBanks().map { it.name }
 
 
 }

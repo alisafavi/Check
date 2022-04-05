@@ -22,11 +22,10 @@ data class Check(
 
 @Entity
 data class Person (
-    @PrimaryKey(autoGenerate = true)
-    val pId :Int =0,
     val name :String,
-    val phoneNumber : Long? = null
-
+    val phoneNumber : Long? = null,
+    @PrimaryKey(autoGenerate = true)
+    val pId :Int =0
 )
 
 @Entity

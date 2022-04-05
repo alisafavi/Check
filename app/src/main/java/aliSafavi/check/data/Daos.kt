@@ -43,12 +43,15 @@ interface PersonDao {
     suspend fun getAllPersons(): List<Person>
 
     @Query("select * from Person where pId = :id")
-    suspend fun getById(id: Int): Person
+    suspend fun getPerson(id: Int): Person
 
     @Query("select * from Person where name = :name OR phoneNumber = :pNum")
     suspend fun checkPerson(name: String, pNum: Long?): List<Person>
     @Query("select * from Person where name =:personName")
     suspend fun getPersonByName(personName: String): Person
+
+    @Query("select * from Person")
+    fun getPersonsObservable(): Flow<List<Person>>
 }
 
 @Dao
@@ -63,7 +66,10 @@ interface BankDao {
     suspend fun update(bank: Bank)
 
     @Query("select * from Bank")
-    suspend fun getAllBanks(): List<Bank>
+    suspend fun getBanks(): List<Bank>
+
+    @Query("select * from Bank")
+    fun getBanksObservable(): Flow<List<Bank>>
 
     @Query("select * from Bank where accountNumber = :accountNum OR name = :bankName")
     suspend fun checkBank(accountNum: Long, bankName: String): List<Bank>

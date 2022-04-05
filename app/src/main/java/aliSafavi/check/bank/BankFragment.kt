@@ -55,12 +55,13 @@ class BankFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewModel.start(args.bankId)
+
         initView()
         setupButtons()
         setupNavigation()
         setupSnakbar()
 
-        viewModel.start(args.bankId)
     }
 
     private fun setupButtons() {
@@ -99,7 +100,7 @@ class BankFragment : Fragment() {
                 }
                 error=null
             }
-            showDropDown()
+//            showDropDown()
         }
 
         etAccountName = binding.etAccountName

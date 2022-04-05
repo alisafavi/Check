@@ -3,8 +3,7 @@ package aliSafavi.check.bank
 import aliSafavi.check.Event
 import aliSafavi.check.R
 import aliSafavi.check.model.Bank
-import aliSafavi.check.repository.BankRepository
-import android.text.BoringLayout
+import aliSafavi.check.data.repository.BankRepository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -49,7 +48,7 @@ class BankViewModel @Inject constructor(
 
     fun save(newbank: Bank) {
         if (bankId == 0) {
-            createCheck(Bank(newbank.name, newbank.accountNumber, newbank.img))
+            createBank(Bank(newbank.name, newbank.accountNumber, newbank.img))
         } else {
             updateBank(Bank(newbank.name, newbank.accountNumber, newbank.img, bankId!!))
         }
@@ -60,14 +59,20 @@ class BankViewModel @Inject constructor(
         if (bank.bId == null)
             throw RuntimeException("updateBank() was called but bank is new.")
         viewModelScope.launch {
-            repository.saveBank(bank)
-            _bankUpdatedEvent.value = Event(R.string.successfully_update_bank_message)
-            _navigateUp.value=true
+            repository.updateBank(bank).run {
+                onSuccess {
+                    _bankUpdatedEvent.value = Event(it)
+                    _navigateUp.value=true
+                }
+                onFailure {
+                    _bankUpdatedEvent.value = Event(it.localizedMessage.toInt())
+                }
+            }
         }
     }
 
-    private fun createCheck(newBank: Bank) = viewModelScope.launch {
-        repository.saveBank(newBank).run {
+    private fun createBank(newBank: Bank) = viewModelScope.launch {
+        repository.insertBank(newBank).run {
             onSuccess {
                 _bankUpdatedEvent.value = Event(it)
                 _navigateUp.value=true
@@ -76,6 +81,5 @@ class BankViewModel @Inject constructor(
                 _bankUpdatedEvent.value = Event(it.localizedMessage.toInt())
             }
         }
-
     }
 }

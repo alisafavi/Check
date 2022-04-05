@@ -1,5 +1,7 @@
 package aliSafavi.check.person
 
+import aliSafavi.check.Event
+import aliSafavi.check.R
 import aliSafavi.check.model.Person
 import aliSafavi.check.data.repository.PersonRepository
 import androidx.lifecycle.LiveData
@@ -15,33 +17,69 @@ class PersonViewModel @Inject constructor(
     private val repository: PersonRepository
 ) : ViewModel() {
 
-    private val _message = MutableLiveData<String>()
-    val message : LiveData<String>
-        get() = _message
-
     private val _Person = MutableLiveData<Person>()
-    val Person : LiveData<Person>
+    val Person: LiveData<Person>
         get() = _Person
 
-    fun savePerson(person: Person) {
+    private val _bankUpdatedEvent = MutableLiveData<Event<Int>>()
+    val bankUpdatedEvent: LiveData<Event<Int>>
+        get() = _bankUpdatedEvent
+    private val _navigateUp = MutableLiveData<Boolean>()
+    val navigateUp: LiveData<Boolean>
+        get() = _navigateUp
+
+    private var personId: Int? = null
+
+    fun start(personId: Int?) {
+        this.personId = personId
+        if (personId == null) {
+            // No need to populate, it's a new bak
+            return
+        }
         viewModelScope.launch {
-            if (person.pId == 0) {
-                if (repository.checkPerson(person).size ==0){
-                    repository.insertPerson(person)
-                    _message.value = "New person created"
-                }else
-                    _message.value = "Person was duplicated"
-            } else {
-                repository.updatePerson(person)
-                _message.value = "person edited"
+            repository.getPerson(personId).let { result ->
+                result.onSuccess {
+                    _Person.value = it
+                }
             }
         }
     }
 
-    fun initPerson(personId: Int) {
-        viewModelScope.launch {
-            val a = repository.getPersonById(personId)
-            _Person.value = a
+    fun save(newPerson: Person) {
+        if (personId == 0) {
+            createPerson(Person(newPerson.name,newPerson.phoneNumber))
+        } else {
+            updatePerson(Person(newPerson.name,newPerson.phoneNumber, personId!!))
         }
     }
+
+    private fun updatePerson(person: Person) {
+        if (personId == 0)
+            throw RuntimeException("updateBank() was called but bank is new.")
+        viewModelScope.launch {
+            repository.updatePerson(person).run {
+                onSuccess {
+                    _bankUpdatedEvent.value = Event(R.string.successfully_update_person_message)
+                    _navigateUp.value = true
+                }
+                onFailure {
+                    _bankUpdatedEvent.value = Event(it.localizedMessage.toInt())
+                }
+            }
+        }
+    }
+
+    private fun createPerson(newPerson: Person) = viewModelScope.launch {
+        repository.insertPerson(newPerson).run {
+            onSuccess {
+                _bankUpdatedEvent.value = Event(it)
+                _navigateUp.value = true
+            }
+            onFailure {
+                _bankUpdatedEvent.value = Event(it.localizedMessage.toInt())
+            }
+        }
+    }
+
+
 }

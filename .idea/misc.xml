@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../program/Android/Sdk/platforms/android-31/data/res/layout/two_line_list_item.xml" value="0.35625" />
         <entry key="../../../program/Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_1.xml" value="0.35625" />
         <entry key="../../../program/Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_2.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable/ic_edit.xml" value="0.1975" />
@@ -20,6 +21,7 @@
         <entry key="app/src/main/res/layout/fragment_person.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_person_list.xml" value="0.18177083333333333" />
         <entry key="app/src/main/res/layout/list_popup_window_item.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/person_item.xml" value="0.35625" />
         <entry key="app/src/main/res/menu/navigation_menu.xml" value="0.32685185185185184" />
         <entry key="app/src/main/res/menu/popup_menu.xml" value="0.35625" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2505" />

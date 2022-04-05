@@ -1,13 +1,18 @@
 package aliSafavi.check.person
 
+import aliSafavi.check.EventObserver
+import aliSafavi.check.R
 import aliSafavi.check.databinding.FragmentPersonBinding
+import aliSafavi.check.model.Bank
 import aliSafavi.check.model.Person
+import aliSafavi.check.utils.setupSnackbar
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.text.isDigitsOnly
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -38,44 +43,85 @@ class PersonFragment : Fragment() {
         binding.viewModel = viewModel
         etPersonName = binding.etPersonName
         etPersonPhoneNumber = binding.etPersonPhoneNumber
+        btnCancel=binding.btnCancel
+        btnOk=binding.btnOk
 
-        if (args.personId != 0)
-            viewModel.initPerson(args.personId)
-
-        binding.btnOk.setOnClickListener {
-            viewModel.savePerson(
-                Person(
-                    pId = args.personId,
-                    name = etPersonName.text.toString().trim(),
-                    phoneNumber = etPersonPhoneNumber.text.toString().trim()?.toLong()
-                )
-            )
-        }
-
-        binding.btnCancel.setOnClickListener {
-            navigateUp()
-        }
-
-        handelMessage()
-
-        viewModel.Person.observe(viewLifecycleOwner, Observer {
-            etPersonName.setText(it.name)
-        })
+//        if (args.personId != 0)
+//            viewModel.initPerson(args.personId)
 
         binding.lifecycleOwner = this
         return binding.root
     }
-    
-    fun handelMessage(){
-        viewModel.message.observe(viewLifecycleOwner, Observer {
-            Snackbar.make(binding.root,it,Snackbar.LENGTH_LONG).show()
-            navigateUp()
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupButtons()
+        setupNavigation()
+        setupSnakbar()
+
+        viewModel.start(args.personId)
+    }
+
+    private fun setupButtons() {
+        btnCancel.setOnClickListener {
+            exit()
+        }
+        btnOk.apply {
+            setOnClickListener { save() }
+            if (args.personId != 0)
+                text = "edit"
+        }
+    }
+
+    private fun validateForm(): Boolean {
+        var status = true
+        if (etPersonName.text.toString().isEmpty()) {
+            etPersonName.error = getString(R.string.empty_error)
+            status = false
+        }
+        if(etPersonPhoneNumber.text.toString().isEmpty()){
+            etPersonPhoneNumber.error = getString(R.string.empty_error)
+            status = false
+        }else if (!etPersonPhoneNumber.text.toString().isDigitsOnly()) {
+            etPersonPhoneNumber.error = getString(R.string.invalid_value_error)
+            status = false
+        }
+        return status
+    }
+
+    private fun save() {
+        if (validateForm()) {
+            try {
+                viewModel.save(
+                    Person(
+                        pId = args.personId,
+                        name = etPersonName.text.toString(),
+                        phoneNumber = etPersonPhoneNumber.text.toString().trim()?.toLong()
+                    )
+                )
+            } catch (e: Exception) {
+
+            }
+        }
+    }
+
+    private fun setupNavigation() {
+        viewModel.navigateUp.observe(viewLifecycleOwner, Observer {
+            if (it)
+                exit()
         })
     }
 
-
-    fun navigateUp(){
-        findNavController().navigateUp()
+    private fun setupSnakbar() {
+        viewModel.bankUpdatedEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                view?.setupSnackbar(it)
+            }
+        )
     }
 
+    fun exit() {
+        findNavController().navigateUp()
+    }
 }

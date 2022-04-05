@@ -8,6 +8,10 @@
     <string name="successfully_saved_bank_message">bank saved</string>
     <string name="duplicate_bank_message">The bank name or account number is duplicate</string>
     <string name="successfully_update_bank_message">bank updated</string>
+    <string name="successfully_saved_person_message">person saved</string>
+    <string name="duplicate_person_message">The person name or phone number is duplicate</string>
+    <string name="successfully_update_person_message">person updated</string>
+    <string name="erroe_message">some thing is wrong</string>
     <array name="bank_name">
         <item>mellat</item>
         <item>melli</item>
