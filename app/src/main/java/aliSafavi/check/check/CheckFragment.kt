@@ -63,7 +63,7 @@ class CheckFragment : Fragment() {
         binding = FragmentCheckBinding.inflate(inflater, container, false).also {
             it.viewModel = viewModel
         }
-
+        setHasOptionsMenu(true)
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
@@ -74,7 +74,6 @@ class CheckFragment : Fragment() {
         viewModel.start(args.checkId)
         setupNavigation()
         setupSnakbar()
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -150,7 +149,7 @@ class CheckFragment : Fragment() {
                         et_amount.addTextChangedListener(this)
 
                         binding.etCheckAmountParent.helperText =
-                            NumberToText(input.toString()).toString() + "تومان"
+                            NumberToText(input.toString()).toString() + " تومان"
                     }
                 }
 
@@ -244,14 +243,6 @@ class CheckFragment : Fragment() {
         }
         if (btnCheckDate.text.toString().isEmpty()) {
             btnCheckDate.error = getString(R.string.empty_error)
-            status = false
-        }
-        if (etCheckReciver.text.toString().isEmpty()) {
-            etCheckReciver.error = getString(R.string.empty_error)
-            status = false
-        }
-        if (etCheckAccount.text.toString().isEmpty()) {
-            etCheckAccount.error = getString(R.string.empty_error)
             status = false
         }
         return status

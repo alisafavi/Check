@@ -23,13 +23,10 @@ class CheckRepository @Inject constructor(
         checkDao.insert(check)
     }
 
-    suspend fun getBankByName(bankName: String) = with(Dispatchers.IO) {
-        bankDao.getBankByName(bankName)
-    }
+    suspend fun getBankByName(bankName: String) = bankDao.getBankByName(bankName)
 
-    suspend fun getPersonByName(personName: String) = with(Dispatchers.IO) {
-        personDao.getPersonByName(personName)
-    }
+    suspend fun getPersonByName(personName: String) = personDao.getPersonByName(personName)
+
 
     suspend fun update(check: Check) {
         checkDao.update(check)

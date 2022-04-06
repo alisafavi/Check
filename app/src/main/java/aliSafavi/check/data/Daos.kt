@@ -41,8 +41,8 @@ interface PersonDao {
     @Update
     suspend fun update(person: Person)
 
-    @Query("select * from Person")
-    suspend fun getAllPersons(): List<Person>
+    @Query("select name from Person")
+    suspend fun getPersonsName(): List<String>
 
     @Query("select * from Person where pId = :id")
     suspend fun getPerson(id: Int): Person
@@ -68,8 +68,8 @@ interface BankDao {
     @Update
     suspend fun update(bank: Bank)
 
-    @Query("select * from Bank")
-    suspend fun getBanks(): List<Bank>
+    @Query("select name from Bank")
+    suspend fun getBanksName(): List<String>
 
     @Query("select * from Bank")
     fun getBanksObservable(): Flow<List<Bank>>

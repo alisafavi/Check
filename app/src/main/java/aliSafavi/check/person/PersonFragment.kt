@@ -93,7 +93,7 @@ class PersonFragment : Fragment() {
                 viewModel.save(
                     Person(
                         pId = args.personId,
-                        name = etPersonName.text.toString(),
+                        name = etPersonName.text.toString().trim(),
                         phoneNumber = etPersonPhoneNumber.text.toString().trim()?.let {
                             if (!it.isEmpty())
                                 it.toLong()

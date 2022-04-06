@@ -9,7 +9,6 @@ import aliSafavi.check.data.repository.BankRepository
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,9 +32,9 @@ class CheckViewModel @Inject constructor(
     val navigateUp: LiveData<Boolean>
         get() = _navigateUp
 
-    suspend fun getPersonsName(): List<String> = personRepository.getAllPersons().map { it.name }
+    suspend fun getPersonsName(): List<String> = personRepository.getPersonsName()
 
-    suspend fun getBanksName(): List<String> = bankRepository.getBanks().map { it.name }
+    suspend fun getBanksName(): List<String> = bankRepository.getBanksName()
 
     fun start(checkId: Long) {
         this.checkId = checkId
@@ -63,15 +62,15 @@ class CheckViewModel @Inject constructor(
 
     private suspend fun initCheck(checkPrewiew: CheckPrewiew): Check {
         val personId =
-            if (!checkPrewiew.personName.isEmpty())
-                checkRepository.getPersonByName(checkPrewiew.personName).pId
+            if (!checkPrewiew.personName.isNullOrEmpty())
+                checkRepository.getPersonByName(checkPrewiew.personName!!).pId
             else
-                0
+                null
         val bankId =
-            if (!checkPrewiew.bankName.isEmpty())
-                checkRepository.getBankByName(checkPrewiew.bankName).bId
+            if (!checkPrewiew.bankName.isNullOrEmpty())
+                checkRepository.getBankByName(checkPrewiew.bankName!!).bId
             else
-                0
+                null
 
         return Check(
             checkPrewiew.number,
@@ -122,6 +121,6 @@ data class CheckPrewiew(
     var date: Long,
     var amount: Long,
     val isPaid: Boolean = false,
-    var personName: String,
-    var bankName: String
+    var personName: String?,
+    var bankName: String?
 )

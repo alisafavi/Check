@@ -14,8 +14,8 @@ data class Check(
     var date: Long,
     var amount : Long,
     val isPaid : Boolean = false,
-    var personId: Int=0,
-    var bankId: Int=0,
+    var personId: Int?,
+    var bankId: Int?,
     @PrimaryKey(autoGenerate = true)
     val cId: Long = 0
 )
@@ -35,7 +35,11 @@ data class Bank (
     val img : String? = null,
     @PrimaryKey(autoGenerate = true)
     val bId: Int=0
-)
+){
+    override fun toString(): String {
+        return name
+    }
+}
 
 data class FullCheck(
     @Embedded
@@ -44,10 +48,10 @@ data class FullCheck(
         parentColumn = "bankId",
         entityColumn = "bId"
     )
-    val bank :Bank,
+    val bank :Bank?,
     @Relation(
         parentColumn = "personId",
         entityColumn = "pId"
     )
-    val person : Person
+    val person : Person?
 )

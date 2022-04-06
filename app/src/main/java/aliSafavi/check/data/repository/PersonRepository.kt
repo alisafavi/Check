@@ -47,6 +47,6 @@ class PersonRepository @Inject constructor(
         }
     }
 
-    suspend fun getAllPersons(): List<Person> = personDao.getAllPersons()
+    suspend fun getPersonsName(): List<String> = personDao.getPersonsName()
     fun getPersonsObservable() = personDao.getPersonsObservable()
 }

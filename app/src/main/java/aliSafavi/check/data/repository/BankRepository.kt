@@ -3,7 +3,6 @@ package aliSafavi.check.data.repository
 import aliSafavi.check.R
 import aliSafavi.check.data.BankDao
 import aliSafavi.check.model.Bank
-import aliSafavi.check.model.Person
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -13,7 +12,7 @@ import javax.inject.Singleton
 class BankRepository @Inject constructor(
     private val bankDao: BankDao
 ) {
-    suspend fun getBanks() = bankDao.getBanks()
+    suspend fun getBanksName() = bankDao.getBanksName()
 
     fun getBanksObservable() = bankDao.getBanksObservable()
 

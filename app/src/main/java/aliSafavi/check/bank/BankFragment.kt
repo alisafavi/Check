@@ -136,8 +136,8 @@ class BankFragment : Fragment() {
                 viewModel.save(
                     Bank(
                         bId = args.bankId,
-                        name = etAccountName.text.toString(),
-                        accountNumber = binding.etBankNumber.text.toString().toLong(),
+                        name = etAccountName.text.toString().trim(),
+                        accountNumber = binding.etBankNumber.text.toString().trim().toLong(),
                         img = etBankName.text.toString().trim().plus(".png")
                     )
                 )

@@ -1,7 +1,9 @@
 package aliSafavi.check.check_list
 
+import aliSafavi.check.EventObserver
 import aliSafavi.check.R
 import aliSafavi.check.databinding.FragmentCheckListBinding
+import aliSafavi.check.utils.setupSnackbar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -44,6 +46,10 @@ class CheckListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupSnakbar()
+    }
+
     private fun setupList() {
         val adapter = CheckListAdapter(OnCheckItemClickListener {
             val bundel = bundleOf("checkId" to it)
@@ -56,6 +62,15 @@ class CheckListFragment : Fragment() {
             adapter.submitList(it)
         })
 
+    }
+
+    private fun setupSnakbar() {
+        viewModel.checkUpdatedEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                view?.setupSnackbar(it)
+            }
+        )
     }
 
 }
