@@ -19,7 +19,6 @@ class CheckViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var checkId: Long? = null
-    var date: Long = 0L
 
     private val _check = MediatorLiveData<FullCheck>()
     val check: LiveData<FullCheck>
@@ -46,7 +45,6 @@ class CheckViewModel @Inject constructor(
             checkRepository.getCheck(checkId).let { result ->
                 result.onSuccess {
                     _check.value = it
-                    date = it.check.date
                 }
             }
         }
@@ -79,6 +77,7 @@ class CheckViewModel @Inject constructor(
             checkPrewiew.isPaid,
             personId,
             bankId,
+            checkPrewiew.reminderTime,
             checkPrewiew.cId
         )
     }
@@ -121,6 +120,7 @@ data class CheckPrewiew(
     var date: Long,
     var amount: Long,
     val isPaid: Boolean = false,
+    val reminderTime:Long,
     var personName: String?,
     var bankName: String?
 )

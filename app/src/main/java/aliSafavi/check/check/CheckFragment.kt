@@ -16,7 +16,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -50,7 +49,9 @@ class CheckFragment : Fragment() {
     private lateinit var etCheckReciver: MaterialAutoCompleteTextView
     private lateinit var etCheckAccount: MaterialAutoCompleteTextView
 
-    private var remider = Calendar.getInstance()
+    private var remider = Calendar.getInstance().apply {
+        timeInMillis=0L
+    }
     private var onceRemind = true
 
     private var date = 0L
@@ -73,11 +74,103 @@ class CheckFragment : Fragment() {
         viewModel.start(args.checkId)
         setupNavigation()
         setupSnakbar()
+        getDates()
         setupReminder()
     }
 
     private fun setupReminder() {
+        binding.etDateRemind.run {
+            setOnClickListener {
+                setupDatePicker().let {
+                    it.show(childFragmentManager, "reminder")
+                    it.addOnPositiveButtonClickListener(object :
+                        MaterialPickerOnPositiveButtonClickListener<Long?> {
+                        override fun onPositiveButtonClick(selection: Long?) {
+                            Calendar.getInstance().run {
+                                timeInMillis = selection!!
+                                remider.set(
+                                    get(Calendar.YEAR),
+                                    get(Calendar.MONTH),
+                                    get(Calendar.DAY_OF_MONTH)
+                                )
+                            }
+                            PersianCalendar(selection!!).run {
+                                month++
+                                binding.etDateRemind.setText(toString())
+                            }
+                        }
+                    })
+                }
+            }
+        }
+        binding.etTimeRemind.run {
+            setOnClickListener {
+                setupTimePicker().let { timePicker ->
+                    timePicker.show(childFragmentManager, "time reminder")
+                    timePicker.addOnPositiveButtonClickListener {
+                        Calendar.getInstance().run {
+                            remider.set(Calendar.HOUR_OF_DAY, timePicker.hour)
+                            remider.set(Calendar.MINUTE, timePicker.minute)
+                        }
+                        setText("${timePicker.hour}:${timePicker.minute}")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getDates() {
+        viewModel.check.observe(viewLifecycleOwner, Observer {
+            date = it.check.date
+            remider.timeInMillis = it.check.reminderTime
+            setupReminderCheckBox()
+        })
+        setupReminderCheckBox()
+    }
+
+    private fun setupReminderCheckBox() {
         binding.btnReminder.run {
+            if (remider.timeInMillis != 0L) {
+                isChecked=true
+                binding.reminderParent.visibility=View.VISIBLE
+                fillReminders()
+            }
+            setOnCheckedChangeListener { buttonView, isChecked ->
+                when (isChecked) {
+                    false -> {
+                        remider.timeInMillis = 0L
+                        binding.reminderParent.visibility = View.GONE
+                    }
+                    true -> {
+                        binding.reminderParent.visibility = View.VISIBLE
+                        fillReminders()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun fillReminders() {
+        if (onceRemind && date != 0L && remider.timeInMillis == 0L) {
+            onceRemind = false
+            remider.timeInMillis = date
+            remider.add(Calendar.DAY_OF_MONTH, -1)
+            remider.set(Calendar.HOUR_OF_DAY, 21)
+            remider.set(Calendar.MINUTE, 0)
+        }
+        if (remider.timeInMillis != 0L)
+            PersianCalendar().run {
+                timeInMillis = remider.timeInMillis
+                binding.etDateRemind.setText("$year/${month + 1}/$day")
+                binding.etTimeRemind.setText(
+                    "${get(Calendar.HOUR_OF_DAY)}:${get(Calendar.MINUTE)}"
+                )
+            }
+    }
+
+    private fun setupReminder3() {
+        binding.btnReminder.run {
+
             setOnCheckedChangeListener { buttonView, isChecked ->
                 when (isChecked) {
                     false -> binding.reminderParent.visibility = View.GONE
@@ -85,12 +178,12 @@ class CheckFragment : Fragment() {
                         binding.reminderParent.visibility = View.VISIBLE
                         if (onceRemind) {
                             onceRemind = false
-                            if (date == 0L)
-                                date = viewModel.date
-                            remider.timeInMillis = date
-                            remider.add(Calendar.DAY_OF_MONTH, -1)
-                            remider.set(Calendar.HOUR_OF_DAY, 21)
-                            remider.set(Calendar.MINUTE, 0)
+                            if (date != 0L) {
+                                remider.timeInMillis = date
+                                remider.add(Calendar.DAY_OF_MONTH, -1)
+                                remider.set(Calendar.HOUR_OF_DAY, 21)
+                                remider.set(Calendar.MINUTE, 0)
+                            }
                         }
                         if (date != 0L)
                             PersianCalendar().run {
@@ -104,6 +197,7 @@ class CheckFragment : Fragment() {
                 }
             }
         }
+
         binding.etDateRemind.run {
             setOnClickListener {
                 setupDatePicker().let {
@@ -303,14 +397,13 @@ class CheckFragment : Fragment() {
     private fun save() {
         if (validateForm()) {
             try {
-                if (date == 0L)
-                    date = viewModel.date
                 viewModel.save(
                     CheckPrewiew(
                         cId = args.checkId,
                         number = etCheckNumber.text.toString().trim().toLong(),
                         date = date,
                         amount = etCheckAmount.text.toString().replace(",", "").trim().toLong(),
+                        reminderTime = remider.timeInMillis,
                         personName = etCheckReciver.text.toString().trim(),
                         bankName = etCheckAccount.text.toString().trim()
                     )

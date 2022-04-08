@@ -61,7 +61,9 @@ class CheckListFragment : Fragment() {
         checkList.adapter=adapter
         viewModel.checks.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
-            lastCheck = it.size.toLong()
+            if (!it.isEmpty()){
+                lastCheck = it[it.size-1].check.cId
+            }
         })
     }
 

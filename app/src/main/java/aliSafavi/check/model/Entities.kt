@@ -16,6 +16,7 @@ data class Check(
     val isPaid : Boolean = false,
     var personId: Int?,
     var bankId: Int?,
+    val reminderTime:Long,
     @PrimaryKey(autoGenerate = true)
     val cId: Long = 0
 )
