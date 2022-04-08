@@ -8,12 +8,12 @@
     <item
         android:id="@+id/bankListFragment"
         android:title="banks"
-        android:icon="@drawable/ic_round_bank"
+        android:icon="@drawable/ic_account"
         />
     <item
         android:id="@+id/personListFragment"
         android:title="persons"
-        android:icon="@drawable/ic_round_person"
+        android:icon="@drawable/ic_person"
         />
 
 </menu>

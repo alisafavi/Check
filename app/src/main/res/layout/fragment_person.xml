@@ -18,7 +18,7 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center_vertical"
             android:layout_marginHorizontal="40dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:focusable="true"
                 app:endIconMode="clear_text"
+                app:startIconDrawable="@drawable/ic_person"
                 app:errorEnabled="true"
                 tools:ignore="MissingConstraints">
 
@@ -52,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:focusable="true"
+                app:startIconDrawable="@drawable/ic_phone"
                 app:endIconMode="clear_text"
                 app:errorEnabled="true"
                 tools:ignore="MissingConstraints">

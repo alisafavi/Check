@@ -3,8 +3,7 @@ package aliSafavi.check.check
 import aliSafavi.check.EventObserver
 import aliSafavi.check.R
 import aliSafavi.check.databinding.FragmentCheckBinding
-import aliSafavi.check.model.Bank
-import aliSafavi.check.reciver.AlarmTest
+import aliSafavi.check.reciver.AlarmReciver
 import aliSafavi.check.utils.NumberToText
 import aliSafavi.check.utils.setupDatePicker
 import aliSafavi.check.utils.setupSnackbar
@@ -17,19 +16,16 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.text.isDigitsOnly
-import androidx.core.widget.addTextChangedListener
-import androidx.core.widget.doBeforeTextChanged
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.xdev.arch.persiancalendar.datepicker.MaterialPickerOnPositiveButtonClickListener
@@ -50,9 +46,12 @@ class CheckFragment : Fragment() {
 
     private lateinit var etCheckNumber: TextInputEditText
     private lateinit var etCheckAmount: TextInputEditText
-    private lateinit var btnCheckDate: MaterialButton
+    private lateinit var etnCheckDate: TextInputEditText
     private lateinit var etCheckReciver: MaterialAutoCompleteTextView
     private lateinit var etCheckAccount: MaterialAutoCompleteTextView
+
+    private var remider = Calendar.getInstance()
+    private var onceRemind = true
 
     private var date = 0L
 
@@ -63,7 +62,7 @@ class CheckFragment : Fragment() {
         binding = FragmentCheckBinding.inflate(inflater, container, false).also {
             it.viewModel = viewModel
         }
-        setHasOptionsMenu(true)
+
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
@@ -74,21 +73,74 @@ class CheckFragment : Fragment() {
         viewModel.start(args.checkId)
         setupNavigation()
         setupSnakbar()
+        setupReminder()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.add(1, 1, 1, "reminder")
-            .setIcon(R.drawable.notifications_disable)
-            .setShowAsAction(ActionMode.TYPE_FLOATING)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            1 -> {
-                setAlarm()
-                return true
+    private fun setupReminder() {
+        binding.btnReminder.run {
+            setOnCheckedChangeListener { buttonView, isChecked ->
+                when (isChecked) {
+                    false -> binding.reminderParent.visibility = View.GONE
+                    true -> {
+                        binding.reminderParent.visibility = View.VISIBLE
+                        if (onceRemind) {
+                            onceRemind = false
+                            if (date == 0L)
+                                date = viewModel.date
+                            remider.timeInMillis = date
+                            remider.add(Calendar.DAY_OF_MONTH, -1)
+                            remider.set(Calendar.HOUR_OF_DAY, 21)
+                            remider.set(Calendar.MINUTE, 0)
+                        }
+                        if (date != 0L)
+                            PersianCalendar().run {
+                                timeInMillis = remider.timeInMillis
+                                binding.etDateRemind.setText("$year/${month + 1}/$day")
+                                binding.etTimeRemind.setText(
+                                    "${get(Calendar.HOUR_OF_DAY)}:${get(Calendar.MINUTE)}"
+                                )
+                            }
+                    }
+                }
             }
-            else -> super.onOptionsItemSelected(item)
+        }
+        binding.etDateRemind.run {
+            setOnClickListener {
+                setupDatePicker().let {
+                    it.show(childFragmentManager, "reminder")
+                    it.addOnPositiveButtonClickListener(object :
+                        MaterialPickerOnPositiveButtonClickListener<Long?> {
+                        override fun onPositiveButtonClick(selection: Long?) {
+                            Calendar.getInstance().run {
+                                timeInMillis = selection!!
+                                remider.set(
+                                    get(Calendar.YEAR),
+                                    get(Calendar.MONTH),
+                                    get(Calendar.DAY_OF_MONTH)
+                                )
+                            }
+                            PersianCalendar(selection!!).run {
+                                month++
+                                binding.etDateRemind.setText(toString())
+                            }
+                        }
+                    })
+                }
+            }
+        }
+        binding.etTimeRemind.run {
+            setOnClickListener {
+                setupTimePicker().let { timePicker ->
+                    timePicker.show(childFragmentManager, "time reminder")
+                    timePicker.addOnPositiveButtonClickListener {
+                        Calendar.getInstance().run {
+                            remider.set(Calendar.HOUR_OF_DAY, timePicker.hour)
+                            remider.set(Calendar.MINUTE, timePicker.minute)
+                        }
+                        setText("${timePicker.hour}:${timePicker.minute}")
+                    }
+                }
+            }
         }
     }
 
@@ -97,17 +149,18 @@ class CheckFragment : Fragment() {
             timePicker.show(childFragmentManager, "time picker Tag")
             timePicker.addOnPositiveButtonClickListener {
                 val calendar = Calendar.getInstance().apply {
-                    add(Calendar.MINUTE,timePicker.hour)
+                    add(Calendar.MINUTE, timePicker.hour)
                     add(Calendar.SECOND, timePicker.minute)
                 }
-                Toast.makeText(
-                    requireContext(),
-                    timePicker.hour.toString() + " : " + timePicker.minute.toString(),
-                    Toast.LENGTH_SHORT
-                ).show()
+                val intent = Intent(requireActivity(), AlarmReciver::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    putExtra("checkId", etCheckAmount.text.toString())
+//                    putExtra("")
+                }
 
-                val intent = Intent(requireContext(), AlarmTest::class.java)
-                val pendingIntent = PendingIntent.getBroadcast(requireContext(), 2222, intent, 0)
+                val requestCode = if (args.lastCheck != 0L) args.lastCheck else args.checkId
+                val pendingIntent =
+                    PendingIntent.getBroadcast(context, requestCode.toInt() + 1, intent, 0)
 
                 val alarmManager =
                     requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -161,8 +214,7 @@ class CheckFragment : Fragment() {
             })
 
         }
-        btnCheckDate = binding.btnCheckDate.apply {
-            cornerRadius = 11
+        etnCheckDate = binding.etCheckDate.apply {
             setOnClickListener { getDate() }
         }
         etCheckReciver = binding.etCheckReciver.apply {
@@ -219,7 +271,7 @@ class CheckFragment : Fragment() {
                     date = selection!!
                     val date = PersianCalendar(selection!!)
                     date.month++
-                    btnCheckDate.setText(date.toString())
+                    etnCheckDate.setText(date.toString())
                 }
             })
         }
@@ -241,8 +293,8 @@ class CheckFragment : Fragment() {
             etCheckAmount.error = getString(R.string.invalid_value_error)
             status = false
         }
-        if (btnCheckDate.text.toString().isEmpty()) {
-            btnCheckDate.error = getString(R.string.empty_error)
+        if (etnCheckDate.text.toString().isEmpty()) {
+            etnCheckDate.error = getString(R.string.empty_error)
             status = false
         }
         return status

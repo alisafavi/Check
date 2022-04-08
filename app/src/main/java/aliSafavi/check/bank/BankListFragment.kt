@@ -51,7 +51,7 @@ class BankListFragment : Fragment() {
             val bundle = bundleOf("bankId" to it)
             findNavController().navigate(R.id.action_bankListFragment_to_bankFragment, bundle)
         })
-        binding.bankList.layoutManager = GridLayoutManager(activity, 1)
+        binding.bankList.layoutManager = GridLayoutManager(requireContext(),1)
         binding.bankList.adapter = adapter
         subscribeUi(adapter)
     }

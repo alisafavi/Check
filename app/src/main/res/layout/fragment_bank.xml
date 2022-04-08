@@ -29,13 +29,14 @@
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/ic_round_person" />
+            app:srcCompat="@drawable/ic_image" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="?attr/textInputOutlinedExposedDropdownMenuStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            app:startIconDrawable="@drawable/ic_account"
             filtering="false"
             android:focusable="auto">
 
@@ -74,6 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            app:startIconDrawable="@drawable/ic_qr_code"
             app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText

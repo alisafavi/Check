@@ -24,6 +24,7 @@ class CheckListFragment : Fragment() {
     private val viewModel : CheckListViewModel by viewModels()
     private lateinit var binding : FragmentCheckListBinding
     private lateinit var checkList : RecyclerView
+    private var lastCheck =0L
 
 
     override fun onCreateView(
@@ -38,7 +39,8 @@ class CheckListFragment : Fragment() {
             layoutManager=GridLayoutManager(requireContext(),1)
         }
         binding.btnNewCheck.setOnClickListener {
-            it.findNavController().navigate(R.id.action_checkListFragment_to_checkFragment)
+            val bundle = bundleOf("lastCheck" to lastCheck)
+            it.findNavController().navigate(R.id.action_checkListFragment_to_checkFragment,bundle)
         }
 
         setupList()
@@ -57,11 +59,10 @@ class CheckListFragment : Fragment() {
         })
 
         checkList.adapter=adapter
-        viewModel.getChecks()
         viewModel.checks.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
+            lastCheck = it.size.toLong()
         })
-
     }
 
     private fun setupSnakbar() {

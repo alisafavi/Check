@@ -17,23 +17,22 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="40dp"
             android:orientation="vertical"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="40dp">
+            tools:ignore="MissingConstraints">
 
 
             <com.google.android.material.textfield.TextInputLayout
                 style="?attr/textInputOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginHorizontal="@dimen/text_input_layout_margin_horizontal"
+                android:layout_marginVertical="@dimen/text_input_layout_margin_vertical"
                 android:focusable="auto"
-                app:endIconMode="clear_text">
+                app:endIconMode="clear_text"
+                app:startIconDrawable="@drawable/ic_qr_code">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_check_number"
@@ -50,10 +49,12 @@
                 style="?attr/textInputOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginHorizontal="@dimen/text_input_layout_margin_horizontal"
+                android:layout_marginVertical="@dimen/text_input_layout_margin_vertical"
                 android:focusable="auto"
                 app:endIconMode="clear_text"
-                app:helperTextEnabled="true">
+                app:helperTextEnabled="true"
+                app:startIconDrawable="@drawable/ic_money">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_check_amount"
@@ -65,20 +66,30 @@
                     android:text='@{viewModel.check.check.amount !=0 ?Long.toString(viewModel.check.check.amount) : ""}' />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_check_date"
-                style="?attr/materialButtonOutlinedStyle"
-                convertDate="@{viewModel.check.check.date}"
+            <com.google.android.material.textfield.TextInputLayout
+                style="?attr/textInputOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:hint="select your check date"
-                android:textColor="@color/black" />
+                android:layout_marginHorizontal="@dimen/text_input_layout_margin_horizontal"
+                android:layout_marginVertical="@dimen/text_input_layout_margin_vertical"
+                app:endIconMode="custom"
+                app:startIconDrawable="@drawable/ic_calendar">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_check_date"
+                    convertDate="@{viewModel.check.check.date}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:hint="select your check date"
+                    android:inputType="date" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginHorizontal="@dimen/text_input_layout_margin_horizontal"
+                android:layout_marginVertical="@dimen/text_input_layout_margin_vertical"
                 android:orientation="horizontal">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -88,14 +99,16 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="8dp"
                     android:outlineSpotShadowColor="@android:color/transparent"
-                    android:src="@drawable/ic_add" />
+                    android:src="@drawable/ic_add"
+                    app:fabSize="auto" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="?attr/textInputOutlinedExposedDropdownMenuStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:focusable="auto">
+                    android:focusable="auto"
+                    app:startIconDrawable="@drawable/ic_person">
 
                     <com.google.android.material.textfield.MaterialAutoCompleteTextView
                         android:id="@+id/et_check_reciver"
@@ -109,7 +122,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginHorizontal="@dimen/text_input_layout_margin_horizontal"
+                android:layout_marginVertical="@dimen/text_input_layout_margin_vertical"
                 android:orientation="horizontal">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -119,13 +133,15 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="8dp"
                     android:outlineSpotShadowColor="@android:color/transparent"
-                    android:src="@drawable/ic_add" />
+                    android:src="@drawable/ic_add"
+                    app:fabSize="auto" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="?attr/textInputOutlinedExposedDropdownMenuStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="auto">
+                    android:focusable="auto"
+                    app:startIconDrawable="@drawable/ic_account">
 
                     <com.google.android.material.textfield.MaterialAutoCompleteTextView
                         android:id="@+id/et_check_account"
@@ -136,10 +152,66 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/btn_reminder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/text_input_layout_margin_horizontal"
+                android:layout_marginVertical="@dimen/text_input_layout_margin_vertical"
+                android:text="@string/add_notification_reminder" />
+
+            <LinearLayout
+                android:id="@+id/reminder_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/text_input_layout_margin_horizontal"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/et_date_remind_p"
+                    style="?attr/textInputOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="3"
+                    app:endIconMode="custom"
+                    app:startIconDrawable="@drawable/ic_calendar">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_date_remind"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="YYYY/MM/DD"
+                        android:inputType="date" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="?attr/textInputOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    app:endIconMode="custom"
+                    app:layout_constraintStart_toEndOf="@id/et_date_remind_p"
+                    app:startIconDrawable="@drawable/ic_time">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_time_remind"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="HH : MM"
+                        android:inputType="time" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp">
+                android:layout_marginHorizontal="@dimen/text_input_layout_margin_horizontal"
+                android:layout_marginVertical="@dimen/text_input_layout_margin_vertical">
 
                 <Button
                     android:id="@+id/btn_ok"

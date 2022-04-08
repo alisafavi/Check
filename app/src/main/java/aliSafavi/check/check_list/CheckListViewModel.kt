@@ -27,7 +27,7 @@ class CheckListViewModel @Inject constructor(
     val checks: LiveData<List<FullCheck>>
         get() = _checks
 
-    fun getChecks() {
+    init {
         viewModelScope.launch {
             repository.getUnPassedChecks().collect {
                 _checks.value = it

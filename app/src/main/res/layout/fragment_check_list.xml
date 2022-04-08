@@ -12,15 +12,15 @@
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/check_list"
             android:layout_width="match_parent"
-            tools:listitem="@layout/check_item"
             android:layout_height="match_parent"
-            android:id="@+id/check_list"/>
-
+            tools:listitem="@layout/check_item" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_new_check"
             android:layout_width="wrap_content"
+            app:fabSize="auto"
             android:layout_height="wrap_content"
             android:layout_margin="30dp"
             android:src="@drawable/ic_add"

@@ -17,6 +17,9 @@
     <string name="duplicate_check_message">check number is duplicate</string>
     <string name="successfully_update_check_message">check updated</string>
     <string name="select_time">select time</string>
+    <string name="channel_name">upcoming check</string>
+    <string name="channel_description">reminder for coming checks</string>
+    <string name="add_notification_reminder">add notification reminder</string>
     <array name="bank_name">
         <item>mellat</item>
         <item>melli</item>
