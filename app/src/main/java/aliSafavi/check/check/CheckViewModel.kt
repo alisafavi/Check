@@ -43,13 +43,15 @@ class CheckViewModel @Inject constructor(
             // No need to populate, it's a new bak
             return
         }
-        viewModelScope.launch {
+        val job = viewModelScope.launch {
             checkRepository.getCheck(checkId).let { result ->
                 result.onSuccess {
                     _check.value = it
                 }
             }
         }
+        if (state!=null)
+            job.cancel()
     }
 
     fun save(checkPrewiew: CheckPrewiew) {
