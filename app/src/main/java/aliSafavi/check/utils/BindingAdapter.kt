@@ -19,6 +19,8 @@ import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream
 import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.*
 
 @BindingAdapter("setFromDrawble")
 fun setFromDrawble(view: ShapeableImageView, drawable: Drawable) {
@@ -48,15 +50,6 @@ fun withOutFiltering(view: MaterialAutoCompleteTextView, text: String?) {
 }
 
 @BindingAdapter("convertDate")
-fun convertDate(view: MaterialButton, date: Long) {
-    if (date != 0L) {
-        val date = PersianCalendar(date)
-        date.month++
-        view.setText(date.toString())
-    }
-}
-
-@BindingAdapter("convertDate")
 fun convertDate(view: TextView, date: Long) {
     if (date != 0L) {
         val date = PersianCalendar(date)
@@ -67,6 +60,6 @@ fun convertDate(view: TextView, date: Long) {
 
 @BindingAdapter("numberSeparator")
 fun numberSeparator(view : TextView,number : Long){
-    val decimalFormat = DecimalFormat("###,###,###,###,###,###")
+    val decimalFormat = DecimalFormat("###,###,###,###,###,###", DecimalFormatSymbols(Locale.US))
     view.text=decimalFormat.format(number)
 }

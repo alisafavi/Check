@@ -9,7 +9,7 @@
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:roundIcon="@drawable/logo"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/Theme.Check">
         <receiver
             android:name=".reciver.AlarmReciver"

@@ -6,6 +6,7 @@ import aliSafavi.check.model.FullCheck
 import aliSafavi.check.data.repository.CheckRepository
 import aliSafavi.check.data.repository.PersonRepository
 import aliSafavi.check.data.repository.BankRepository
+import android.util.Log
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,12 +19,13 @@ class CheckViewModel @Inject constructor(
     private val bankRepository: BankRepository
 ) : ViewModel() {
 
+    var state: Map<String, String>? = null
+
     private var checkId: Long? = null
 
     private val _check = MediatorLiveData<FullCheck>()
     val check: LiveData<FullCheck>
         get() = _check
-
 
     private val _checkUpdatedEvent = MutableLiveData<Event<Int>>()
     val checkUpdatedEvent: LiveData<Event<Int>> = _checkUpdatedEvent
@@ -71,13 +73,13 @@ class CheckViewModel @Inject constructor(
                 null
 
         return Check(
-            checkPrewiew.number,
-            checkPrewiew.date,
-            checkPrewiew.amount,
+            checkPrewiew.number!!,
+            checkPrewiew.date!!,
+            checkPrewiew.amount!!,
             checkPrewiew.isPaid,
             personId,
             bankId,
-            checkPrewiew.reminderTime,
+            checkPrewiew.reminderTime!!,
             checkPrewiew.cId
         )
     }
@@ -116,11 +118,11 @@ class CheckViewModel @Inject constructor(
 
 data class CheckPrewiew(
     val cId: Long = 0,
-    var number: Long,
-    var date: Long,
-    var amount: Long,
+    var number: Long?,
+    var date: Long?,
+    var amount: Long?,
     val isPaid: Boolean = false,
-    val reminderTime:Long,
+    val reminderTime: Long?,
     var personName: String?,
     var bankName: String?
 )

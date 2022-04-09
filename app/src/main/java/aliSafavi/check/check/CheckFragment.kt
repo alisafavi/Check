@@ -2,6 +2,7 @@ package aliSafavi.check.check
 
 import aliSafavi.check.EventObserver
 import aliSafavi.check.R
+import aliSafavi.check.bank.convertDate
 import aliSafavi.check.databinding.FragmentCheckBinding
 import aliSafavi.check.reciver.AlarmReciver
 import aliSafavi.check.utils.NumberToText
@@ -16,6 +17,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -32,6 +34,7 @@ import com.xdev.arch.persiancalendar.datepicker.calendar.PersianCalendar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
 import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -50,7 +53,7 @@ class CheckFragment : Fragment() {
     private lateinit var etCheckAccount: MaterialAutoCompleteTextView
 
     private var remider = Calendar.getInstance().apply {
-        timeInMillis=0L
+        timeInMillis = 0L
     }
     private var onceRemind = true
 
@@ -76,6 +79,47 @@ class CheckFragment : Fragment() {
         setupSnakbar()
         getDates()
         setupReminder()
+    }
+
+    override fun onResume() {
+        viewModel.state?.let {
+            etCheckNumber.setText(it["number"])
+            etCheckAmount.setText(it["amount"])
+            etnCheckDate.setText(it["date"])
+            etCheckReciver.setText(it["reciver"])
+            etCheckAccount.setText(it["account"])
+            binding.etDateRemind.setText(it["dateRemind"])
+            binding.etTimeRemind.setText(it["timeRemind"])
+        }
+        super.onResume()
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        viewModel.state?.let {
+            etCheckNumber.setText(it["number"])
+            etCheckAmount.setText(it["amount"])
+            etnCheckDate.setText(it["date"])
+            etCheckReciver.setText(it["reciver"])
+            etCheckAccount.setText(it["account"])
+            binding.etDateRemind.setText(it["dateRemind"])
+            binding.etTimeRemind.setText(it["timeRemind"])
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val number = etCheckNumber.text.toString()
+        val amount = etCheckAmount.text.toString()
+        val date = etnCheckDate.text.toString()
+        val reciver = etCheckReciver.text.toString()
+        val account = etCheckAccount.text.toString()
+        val dateRemind = binding.etDateRemind.text.toString()
+        val timeRemind = binding.etTimeRemind.text.toString()
+
+        viewModel.state = mapOf("number" to number,"amount" to amount,
+            "date" to date,"reciver" to reciver,"account" to account,
+            "dateRemind" to dateRemind,"timeRemind" to timeRemind)
     }
 
     private fun setupReminder() {
@@ -131,8 +175,8 @@ class CheckFragment : Fragment() {
     private fun setupReminderCheckBox() {
         binding.btnReminder.run {
             if (remider.timeInMillis != 0L) {
-                isChecked=true
-                binding.reminderParent.visibility=View.VISIBLE
+                isChecked = true
+                binding.reminderParent.visibility = View.VISIBLE
                 fillReminders()
             }
             setOnCheckedChangeListener { buttonView, isChecked ->
@@ -168,111 +212,33 @@ class CheckFragment : Fragment() {
             }
     }
 
-    private fun setupReminder3() {
-        binding.btnReminder.run {
-
-            setOnCheckedChangeListener { buttonView, isChecked ->
-                when (isChecked) {
-                    false -> binding.reminderParent.visibility = View.GONE
-                    true -> {
-                        binding.reminderParent.visibility = View.VISIBLE
-                        if (onceRemind) {
-                            onceRemind = false
-                            if (date != 0L) {
-                                remider.timeInMillis = date
-                                remider.add(Calendar.DAY_OF_MONTH, -1)
-                                remider.set(Calendar.HOUR_OF_DAY, 21)
-                                remider.set(Calendar.MINUTE, 0)
-                            }
-                        }
-                        if (date != 0L)
-                            PersianCalendar().run {
-                                timeInMillis = remider.timeInMillis
-                                binding.etDateRemind.setText("$year/${month + 1}/$day")
-                                binding.etTimeRemind.setText(
-                                    "${get(Calendar.HOUR_OF_DAY)}:${get(Calendar.MINUTE)}"
-                                )
-                            }
-                    }
-                }
-            }
-        }
-
-        binding.etDateRemind.run {
-            setOnClickListener {
-                setupDatePicker().let {
-                    it.show(childFragmentManager, "reminder")
-                    it.addOnPositiveButtonClickListener(object :
-                        MaterialPickerOnPositiveButtonClickListener<Long?> {
-                        override fun onPositiveButtonClick(selection: Long?) {
-                            Calendar.getInstance().run {
-                                timeInMillis = selection!!
-                                remider.set(
-                                    get(Calendar.YEAR),
-                                    get(Calendar.MONTH),
-                                    get(Calendar.DAY_OF_MONTH)
-                                )
-                            }
-                            PersianCalendar(selection!!).run {
-                                month++
-                                binding.etDateRemind.setText(toString())
-                            }
-                        }
-                    })
-                }
-            }
-        }
-        binding.etTimeRemind.run {
-            setOnClickListener {
-                setupTimePicker().let { timePicker ->
-                    timePicker.show(childFragmentManager, "time reminder")
-                    timePicker.addOnPositiveButtonClickListener {
-                        Calendar.getInstance().run {
-                            remider.set(Calendar.HOUR_OF_DAY, timePicker.hour)
-                            remider.set(Calendar.MINUTE, timePicker.minute)
-                        }
-                        setText("${timePicker.hour}:${timePicker.minute}")
-                    }
-                }
-            }
-        }
-    }
-
-    private fun setAlarm() {
-        view?.setupTimePicker()?.let { timePicker ->
-            timePicker.show(childFragmentManager, "time picker Tag")
-            timePicker.addOnPositiveButtonClickListener {
-                val calendar = Calendar.getInstance().apply {
-                    add(Calendar.MINUTE, timePicker.hour)
-                    add(Calendar.SECOND, timePicker.minute)
-                }
-                val intent = Intent(requireActivity(), AlarmReciver::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    putExtra("checkId", etCheckAmount.text.toString())
+    private fun setAlarm(calendar: Calendar) {
+        val intent = Intent(requireActivity(), AlarmReciver::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            putExtra("checkId", etCheckAmount.text.toString())
 //                    putExtra("")
-                }
+        }
 
-                val requestCode = if (args.lastCheck != 0L) args.lastCheck else args.checkId
-                val pendingIntent =
-                    PendingIntent.getBroadcast(context, requestCode.toInt() + 1, intent, 0)
+        val requestCode = if (args.lastCheck != 0L) args.lastCheck else args.checkId
+        val pendingIntent =
+            PendingIntent.getBroadcast(context, requestCode.toInt() + 1, intent, 0)
 
-                val alarmManager =
-                    requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmManager =
+            requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    alarmManager.setExactAndAllowWhileIdle(
-                        AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent
-                    )
-                } else {
-                    alarmManager.setExact(
-                        AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent
-                    )
-                }
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent
+            )
+        } else {
+            alarmManager.setExact(
+                AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent
+            )
         }
     }
 
     private fun initView() {
+        binding.reminderParent.visibility = View.GONE
         etCheckNumber = binding.etCheckNumber
         etCheckAmount = binding.etCheckAmount.apply {
             addTextChangedListener(object : TextWatcher {
@@ -289,7 +255,7 @@ class CheckFragment : Fragment() {
                     val input = et_amount.text.toString().replace(",", "")
                     if (!input.isEmpty()) {
                         et_amount.removeTextChangedListener(this)
-                        val decimalFormat = DecimalFormat(",###")
+                        val decimalFormat = DecimalFormat(",###", DecimalFormatSymbols(Locale.US))
                         val text = decimalFormat.format(input.toBigInteger())
                         et_amount.setText(text)
                         et_amount.setSelection(text.length)
@@ -397,22 +363,23 @@ class CheckFragment : Fragment() {
     private fun save() {
         if (validateForm()) {
             try {
-                viewModel.save(
-                    CheckPrewiew(
-                        cId = args.checkId,
-                        number = etCheckNumber.text.toString().trim().toLong(),
-                        date = date,
-                        amount = etCheckAmount.text.toString().replace(",", "").trim().toLong(),
-                        reminderTime = remider.timeInMillis,
-                        personName = etCheckReciver.text.toString().trim(),
-                        bankName = etCheckAccount.text.toString().trim()
-                    )
-                )
+                viewModel.save(getForms())
+                setAlarm(remider)
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT).show()
             }
         }
     }
+
+    private fun getForms(): CheckPrewiew = CheckPrewiew(
+        cId = args.checkId,
+        number = etCheckNumber.text.toString().trim()?.toLong(),
+        date = date,
+        amount = etCheckAmount.text.toString().replace(",", "").trim().toLong(),
+        reminderTime = remider.timeInMillis,
+        personName = etCheckReciver.text.toString().trim(),
+        bankName = etCheckAccount.text.toString().trim()
+    )
 
     private fun setupNavigation() {
         viewModel.navigateUp.observe(viewLifecycleOwner, Observer {
