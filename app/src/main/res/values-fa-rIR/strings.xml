@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">چک</string>
+    <string name="empty_error">ورودی خالیست</string>
+    <string name="invalid_value_error">ورودی نامعتبر</string>
+    <string name="empty_forms">همه ی فرم ها باید پر شوند</string>
+    <string name="successfully_saved_bank_message">حساب جدید با موفقیت اضافه شد</string>
+    <string name="duplicate_bank_message">نام حساب یا شماره حساب تکراری است</string>
+    <string name="successfully_update_bank_message">حساب با موفقیت تغییر کرد</string>
+    <string name="successfully_saved_person_message">گیرنده جدید با موفقیت اضافه شد</string>
+    <string name="duplicate_person_message">نام یا شماره موبایل تکراری است</string>
+    <string name="successfully_update_person_message">گیرنده با موفقیت تغییر کرد</string>
+    <string name="erroe_message">خطای ناشناخته</string>
+    <string name="select_date">تاریخ را انتخاب کنید</string>
+    <string name="successfully_saved_check_message">چک جدید با موفقیت اضافه شد</string>
+    <string name="duplicate_check_message">شماره چک تکراری است</string>
+    <string name="successfully_update_check_message">چک با موفقیت تغییر کرد</string>
+    <string name="select_time">زمان را انتخاب کنید</string>
+    <string name="channel_name">چک های در پیش رو</string>
+    <string name="channel_description">یادآور چک های در پیش رو</string>
+    <string name="add_notification_reminder">یادآور</string>
+    <string name="warning">اخطار</string>
+    <string name="are_you_sure_to_delete">آیا از پاک کردن مطمئنید ؟ </string>
+    <string name="cancel">لغو</string>
+    <string name="ok">تایید</string>
+    <string name="paid">پرداخت شده</string>
+    <string name="un_paid">پرداخت نشده</string>
+    <string name="all">همه</string>
+    <string name="check_list">لیست چک ها</string>
+    <string name="bank">حساب بانکی</string>
+    <string name="person">گیرنده</string>
+    <string name="check">چک</string>
+    <string name="person_list">لیست گیرنده ها</string>
+    <string name="bank_list">لیست حساب ها</string>
+    <string name="select_your_bank_name">حساب را انتخاب کنید</string>
+    <string name="enter_your_Account_name">نام حساب را وارد کنید</string>
+    <string name="enter_your_account_number">شماره حساب را وارد کنید</string>
+    <string name="save">ذخیره</string>
+    <string name="enter_your_check_number">شماره سریال چک را وارد کنید</string>
+    <string name="enter_your_check_amount">مبلغ چک را وارد کنید</string>
+    <string name="select_your_check_date">تاریخ چک را وارد کنید</string>
+    <string name="select_your_reciver">گیرنده را انتخاب کنید</string>
+    <string name="select_your_account">حساب بانکی را انتخاب کنید</string>
+    <string name="Enter_reciver_phone_number">شماره موبایل گیرنده را وارد کنید</string>
+    <string name="Enter_reciver_name">نام گیرنده را وارد کنید</string>
+</resources>
