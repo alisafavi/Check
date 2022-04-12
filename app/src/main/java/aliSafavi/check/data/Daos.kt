@@ -26,6 +26,9 @@ interface FullCheckDao {
     @Query("select * from `check` where cId=:checkId")
     suspend fun getCheck(checkId: Long): FullCheck
 
+    @Query("select * from `check` where number=:checkNumber")
+    suspend fun getCheckByNumber(checkNumber: Long): FullCheck
+
     @Query("select * from `Check` where number=:number")
     suspend fun checkCheck(number: Long): List<Check>
 

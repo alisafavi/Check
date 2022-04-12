@@ -1,11 +1,9 @@
 <resources>
     <string name="app_name">Check</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="acocountNumber">%d</string>
     <string name="empty_error">cannot be empty</string>
     <string name="invalid_value_error">invalid vlaue</string>
     <string name="empty_forms">All forms must be filled</string>
-    <string name="successfully_saved_bank_message">bank saved</string>
+    <string name="successfully_saved_bank_message">bank account saved</string>
     <string name="duplicate_bank_message">The bank name or account number is duplicate</string>
     <string name="successfully_update_bank_message">bank updated</string>
     <string name="successfully_saved_person_message">person saved</string>
@@ -21,23 +19,28 @@
     <string name="channel_description">reminder for coming checks</string>
     <string name="add_notification_reminder">add notification reminder</string>
     <string name="warning">Warning</string>
-    <string name="are_you_sure_to_delete">Are you sure to delete ?</string>
-    <string name="cancel">calncel</string>
+    <string name="are_you_sure_to_delete">Are you sure to delete it?</string>
+    <string name="cancel">cancel</string>
     <string name="ok">ok</string>
     <string name="paid">paid</string>
     <string name="un_paid">un paid</string>
     <string name="all">all</string>
-    <array name="bank_name">
-        <item>mellat</item>
-        <item>melli</item>
-        <item>tejarat</item>
-        <item>saman</item>
-    </array>
+    <string name="check_list">check list</string>
+    <string name="bank">bank</string>
+    <string name="person">reciver</string>
+    <string name="check">check</string>
+    <string name="person_list">person list</string>
+    <string name="bank_list">account list</string>
+    <string name="select_your_bank_name">select your bank name</string>
+    <string name="enter_your_Account_name">enter your Account name</string>
+    <string name="enter_your_account_number">enter your account number</string>
+    <string name="save">save</string>
+    <string name="enter_your_check_number">enter your check number</string>
+    <string name="enter_your_check_amount">enter your check amount</string>
+    <string name="select_your_check_date">select your check date</string>
+    <string name="select_your_reciver">select your reciver</string>
+    <string name="select_your_account">select your account</string>
+    <string name="Enter_reciver_phone_number">Enter reciver phone number</string>
+    <string name="Enter_reciver_name">Enter reciver name</string>
 
-    <string-array name="cat_list_popup_window_content" translatable="false">
-        <item>Item 1</item>
-        <item>Item 2</item>
-        <item>Item 3</item>
-        <item>Item 4</item>
-    </string-array>
 </resources>

@@ -45,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:enabled="false"
                 android:layout_height="wrap_content"
-                android:hint="select your bank name"
+                android:hint="@string/select_your_bank_name"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,7 +63,7 @@
                 android:id="@+id/et_account_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="enter your Account name"
+                android:hint="@string/enter_your_Account_name"
                 android:inputType="text"
                 android:maxLines="1"
                 android:text="@{viewModel.bank.name}" />
@@ -81,7 +81,7 @@
                 android:id="@+id/et_bank_number"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="enter your account number"
+                android:hint="@string/enter_your_account_number"
                 android:inputType="number"
                 android:maxLines="1"
                 android:text='@{viewModel.bank.accountNumber != 0 ? Long.toString(viewModel.bank.accountNumber) :""}' />
@@ -99,7 +99,7 @@
                 android:id="@+id/btn_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="cancel"
+                android:text="@string/cancel"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:ignore="MissingConstraints" />
 
@@ -107,7 +107,7 @@
                 android:id="@+id/btn_save_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="save"
+                android:text="@string/save"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:ignore="MissingConstraints" />
 

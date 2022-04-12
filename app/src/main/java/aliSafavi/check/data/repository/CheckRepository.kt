@@ -67,6 +67,18 @@ class CheckRepository @Inject constructor(
         }
     }
 
+    suspend fun getCheckByNumber(checkNumber: Long): Result<FullCheck> = withContext(Dispatchers.IO) {
+        val result = checkDao.getCheckByNumber(checkNumber)
+        try {
+            if (result != null) {
+                return@withContext Result.success(result)
+            } else
+                return@withContext Result.failure(Exception("Task not found!"))
+        } catch (e: Exception) {
+            return@withContext Result.failure(e)
+        }
+    }
+
     suspend fun passCheck(checkId: Long) {
         try {
             checkDao.passCheck(checkId)

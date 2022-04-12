@@ -1,5 +1,9 @@
 package aliSafavi.check
 
+import aliSafavi.check.check.CheckFragment
+import aliSafavi.check.check.Mode
+import aliSafavi.check.data.FullCheckDao
+import aliSafavi.check.data.repository.CheckRepository
 import aliSafavi.check.databinding.ActivityMainBinding
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -7,6 +11,7 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -16,16 +21,27 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    companion object{
+    companion object {
         val CHANNEL_ID = "check_channel_id"
     }
 
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        intent.extras?.let {
+            if (it.getLong("checkId") !=0L || it.getLong("checkNumber") !=0L){
+                val bundle = bundleOf(
+                    "checkId" to it.getLong("checkId"),
+                    "mode" to Mode.VIEW,
+                    "checkNumber" to it.getLong("checkNumber")
+                )
+                CheckFragment.newInstance(bundle).show(supportFragmentManager, "sss")
+            }
+        }
 
         setupNavigationView()
         createNotificationChannel()
@@ -47,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         val drawerLayout = binding.drawerLayout
 
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.checkListFragment,R.id.bankListFragment,R.id.personListFragment),
+            setOf(R.id.checkListFragment, R.id.bankListFragment, R.id.personListFragment),
             drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -60,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = getString(R.string.channel_name)
             val descriptionText = getString(R.string.channel_description)
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
                 description = descriptionText
             }

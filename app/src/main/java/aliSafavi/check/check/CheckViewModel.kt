@@ -39,7 +39,7 @@ class CheckViewModel @Inject constructor(
 
     fun start(checkId: Long) {
         this.checkId = checkId
-        if (checkId == null) {
+        if (checkId == 0L) {
             // No need to populate, it's a new bak
             return
         }
@@ -50,8 +50,22 @@ class CheckViewModel @Inject constructor(
                 }
             }
         }
-        if (state!=null)
+        if (state != null)
             job.cancel()
+    }
+
+    fun startNum(checkNumber: Long) {
+        if (checkNumber == 0L) {
+            // No need to populate, it's a new bak
+            return
+        }
+        viewModelScope.launch {
+            checkRepository.getCheckByNumber(checkNumber).let { result ->
+                result.onSuccess {
+                    _check.value = it
+                }
+            }
+        }.cancel()
     }
 
     fun save(checkPrewiew: CheckPrewiew) {

@@ -25,6 +25,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_check_number_parent"
                 style="?attr/textInputOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,11 +39,10 @@
                     android:id="@+id/et_check_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="enter your check number"
+                    android:hint="@string/enter_your_check_number"
                     android:inputType="number"
                     android:maxLines="1"
-                    android:text='@{viewModel.check.check.number != 0 ? Long.toString(viewModel.check.check.number) : ""}'
-                    />
+                    android:text='@{viewModel.check.check.number != 0 ? Long.toString(viewModel.check.check.number) : ""}' />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -53,8 +53,8 @@
                 android:layout_marginHorizontal="@dimen/text_input_layout_margin_horizontal"
                 android:layout_marginVertical="@dimen/text_input_layout_margin_vertical"
                 android:focusable="auto"
-                app:endIconMode="clear_text"
                 android:layoutDirection="ltr"
+                app:endIconMode="clear_text"
                 app:helperTextEnabled="true"
                 app:startIconDrawable="@drawable/ic_money">
 
@@ -62,13 +62,14 @@
                     android:id="@+id/et_check_amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="enter your check amount"
+                    android:hint="@string/enter_your_check_amount"
                     android:inputType="number"
                     android:maxLines="1"
                     android:text='@{viewModel.check.check.amount !=0 ?Long.toString(viewModel.check.check.amount) : ""}' />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_check_date_parent"
                 style="?attr/textInputOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,7 +83,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
-                    android:hint="select your check date"
+                    android:hint="@string/select_your_check_date"
                     android:inputType="date" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,11 +105,11 @@
                     app:fabSize="auto" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/et_check_reciver_parent"
                     style="?attr/textInputOutlinedExposedDropdownMenuStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:id="@+id/et_check_reciver_parent"
                     android:focusable="auto"
                     app:startIconDrawable="@drawable/ic_person">
 
@@ -116,7 +117,7 @@
                         android:id="@+id/et_check_reciver"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="select your reciver"
+                        android:hint="@string/select_your_reciver"
                         android:text="@{viewModel.check.person.name}" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -139,9 +140,9 @@
                     app:fabSize="auto" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/et_check_account_parent"
                     style="?attr/textInputOutlinedExposedDropdownMenuStyle"
                     android:layout_width="match_parent"
-                    android:id="@+id/et_check_account_parent"
                     android:layout_height="wrap_content"
                     android:focusable="auto"
                     app:startIconDrawable="@drawable/ic_account">
@@ -150,7 +151,7 @@
                         android:id="@+id/et_check_account"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="select your account"
+                        android:hint="@string/select_your_account"
                         android:text="@{viewModel.check.bank.name}" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -158,6 +159,7 @@
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/btn_reminder"
                 android:layout_width="match_parent"
+                android:layoutDirection="rtl"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/text_input_layout_margin_horizontal"
                 android:layout_marginTop="@dimen/text_input_layout_margin_vertical"
@@ -168,11 +170,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/text_input_layout_margin_horizontal"
-                android:orientation="horizontal"
-                >
+                android:layout_marginVertical="@dimen/text_input_layout_margin_vertical"
+                android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="?attr/textInputOutlinedStyle"
+                    android:id="@+id/et_date_remind_parent"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
@@ -190,6 +193,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="?attr/textInputOutlinedStyle"
+                    android:id="@+id/et_time_remind_parent"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -207,24 +211,24 @@
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/sve_edit_parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="50dp"
                 android:layout_marginHorizontal="@dimen/text_input_layout_margin_horizontal"
-                >
+                android:layout_marginVertical="50dp">
 
                 <Button
                     android:id="@+id/btn_ok"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="save"
+                    android:text="@string/save"
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <Button
                     android:id="@+id/btn_cancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="cancel"
+                    android:text="@string/cancel"
                     app:layout_constraintStart_toStartOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

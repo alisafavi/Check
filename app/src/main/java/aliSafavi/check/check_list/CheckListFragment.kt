@@ -2,16 +2,20 @@ package aliSafavi.check.check_list
 
 import aliSafavi.check.EventObserver
 import aliSafavi.check.R
+import aliSafavi.check.bank.BankListFragment
+import aliSafavi.check.check.CheckFragment
 import aliSafavi.check.check.Mode
 import aliSafavi.check.databinding.FragmentCheckListBinding
 import aliSafavi.check.utils.setupSnackbar
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import android.view.MenuItem.SHOW_AS_ACTION_ALWAYS
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -20,6 +24,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.h6ah4i.android.example.swipe_list_menu.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,12 +59,16 @@ class CheckListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Intent(context,BankListFragment::class.java)
         setupSnakbar()
     }
 
     private fun setupList() {
         val adapter = CheckListAdapter(OnCheckItemClickListener {
-            navigateToCheckFragment(it,Mode.VIEW)
+            val bundle = bundleOf("checkId" to it,"mode" to Mode.VIEW)
+//            navigateToCheckFragment(it,Mode.VIEW)
+            CheckFragment.newInstance(bundle)
+                .show(childFragmentManager,"dd")
         })
 
         viewModel.checks.observe(viewLifecycleOwner, Observer {
@@ -111,10 +120,14 @@ class CheckListFragment : Fragment() {
                 if (direction == SwipeRecyclerView.RIGHT_DIRECTION) {
                     if (menuPosition==0){
                         viewModel.passCheck(checkId)
+                        adapter.notifyDataSetChanged()
                     }
                 } else if (direction == SwipeRecyclerView.LEFT_DIRECTION) {
                     when(menuPosition){
-                        0->deleteCheck(checkId)
+                        0-> {
+                            deleteCheck(checkId)
+                            adapter.notifyItemRemoved(adapterPosition)
+                        }
                         1 ->navigateToCheckFragment(checkId,Mode.EDIT)
                     }
                 }
@@ -124,7 +137,7 @@ class CheckListFragment : Fragment() {
         checkList.apply {
             setSwipeMenuCreator(swipeMenuCreator)
             setOnItemMenuClickListener(mMenuItemClickListener)
-            layoutManager=LinearLayoutManager(context)
+            layoutManager=LinearLayoutManager(context, RecyclerView.VERTICAL,false)
             this.adapter=adapter
         }
     }

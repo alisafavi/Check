@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/checkFragment"
         android:name="aliSafavi.check.check.CheckFragment"
-        android:label="check list"
+        android:label="@string/check"
         tools:layout="@layout/fragment_check" >
         <action
             android:id="@+id/action_checkFragment_to_personFragment"
@@ -27,12 +27,16 @@
             android:name="mode"
             app:argType="aliSafavi.check.check.Mode"
             android:defaultValue="NEW" />
+        <argument
+            android:name="checkNumber"
+            app:argType="long"
+            android:defaultValue="0L" />
 
     </fragment>
     <fragment
         android:id="@+id/bankFragment"
         android:name="aliSafavi.check.bank.BankFragment"
-        android:label="bank"
+        android:label="@string/bank"
         tools:layout="@layout/fragment_bank" >
         <argument
             android:name="bankId"
@@ -42,7 +46,7 @@
     <fragment
         android:id="@+id/personFragment"
         android:name="aliSafavi.check.person.PersonFragment"
-        android:label="person"
+        android:label="@string/person"
         tools:layout="@layout/fragment_person" >
         <argument
             android:name="personId"
@@ -52,7 +56,7 @@
     <fragment
         android:id="@+id/checkListFragment"
         android:name="aliSafavi.check.check_list.CheckListFragment"
-        android:label="check list"
+        android:label="@string/check_list"
         tools:layout="@layout/fragment_check_list" >
         <action
             android:id="@+id/action_checkListFragment_to_checkFragment"
@@ -67,7 +71,7 @@
     <fragment
         android:id="@+id/personListFragment"
         android:name="aliSafavi.check.person.PersonListFragment"
-        android:label="person list"
+        android:label="@string/person_list"
         tools:layout="@layout/fragment_person_list" >
         <action
             android:id="@+id/action_personListFragment_to_personFragment"
@@ -76,7 +80,7 @@
     <fragment
         android:id="@+id/bankListFragment"
         android:name="aliSafavi.check.bank.BankListFragment"
-        android:label="bank list"
+        android:label="@string/bank_list"
         tools:layout="@layout/fragment_bank_list" >
         <action
             android:id="@+id/action_bankListFragment_to_bankFragment"

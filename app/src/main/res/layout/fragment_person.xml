@@ -41,7 +41,7 @@
                     android:id="@+id/et_person_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter your customer name"
+                    android:hint="@string/Enter_reciver_name"
                     android:inputType="text"
                     android:maxLines="1"
                     android:text="@{viewModel.person.name}" />
@@ -62,7 +62,7 @@
                     android:id="@+id/et_person_phone_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter your customer phone number"
+                    android:hint="@string/Enter_reciver_phone_number"
                     android:inputType="number"
                     android:maxLines="1"
                     android:text="@{viewModel.person.phoneNumber.toString()}"
@@ -81,7 +81,7 @@
                     android:id="@+id/btn_cancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="cancel"
+                    android:text="@string/cancel"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:ignore="MissingConstraints" />
 
@@ -89,7 +89,7 @@
                     android:id="@+id/btn_ok"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="save"
+                    android:text="@string/save"
                     app:layout_constraintEnd_toEndOf="parent"
                     tools:ignore="MissingConstraints" />
 

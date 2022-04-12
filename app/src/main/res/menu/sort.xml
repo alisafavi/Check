@@ -3,9 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:icon="@drawable/ic_add"
-        android:title="Item" />
-    <item
         android:icon="@drawable/ic_filter_list"
         android:title="sort"
         app:showAsAction="always">
