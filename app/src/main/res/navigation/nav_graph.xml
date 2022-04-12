@@ -23,6 +23,10 @@
             android:name="lastCheck"
             app:argType="long"
             android:defaultValue="0L"/>
+        <argument
+            android:name="mode"
+            app:argType="aliSafavi.check.check.Mode"
+            android:defaultValue="NEW" />
 
     </fragment>
     <fragment

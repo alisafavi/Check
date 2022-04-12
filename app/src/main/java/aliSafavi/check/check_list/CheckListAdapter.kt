@@ -38,6 +38,7 @@ class CheckListAdapter(private val itemClickListener: OnCheckItemClickListener) 
         holder.bind(getItem(position), itemClickListener)
     }
 
+    fun getCheckId(position :Int) =getItem(position).check.cId
 }
 
 

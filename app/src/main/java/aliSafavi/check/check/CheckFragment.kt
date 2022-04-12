@@ -10,6 +10,8 @@ import aliSafavi.check.utils.setupDatePicker
 import aliSafavi.check.utils.setupSnackbar
 import aliSafavi.check.utils.setupTimePicker
 import android.app.AlarmManager
+import android.app.AlertDialog
+import android.app.Dialog
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -22,6 +24,7 @@ import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.text.isDigitsOnly
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -38,6 +41,9 @@ import java.text.DecimalFormatSymbols
 import java.util.*
 import kotlin.collections.ArrayList
 
+enum class Mode{
+    NEW,EDIT,VIEW
+}
 @AndroidEntryPoint
 class CheckFragment : Fragment() {
 
@@ -51,6 +57,9 @@ class CheckFragment : Fragment() {
     private lateinit var etnCheckDate: TextInputEditText
     private lateinit var etCheckReciver: MaterialAutoCompleteTextView
     private lateinit var etCheckAccount: MaterialAutoCompleteTextView
+    private lateinit var etTimeRemind:TextInputEditText
+    private lateinit var etDateRemind:TextInputEditText
+
 
     private var remider = Calendar.getInstance().apply {
         timeInMillis = 0L
@@ -58,6 +67,7 @@ class CheckFragment : Fragment() {
     private var onceRemind = true
 
     private var date = 0L
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,11 +84,44 @@ class CheckFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initView()
 
+        when(args.mode){
+            Mode.VIEW->viewMode()
+            Mode.EDIT->editMode()
+            else->{}
+        }
+
         viewModel.start(args.checkId)
         setupNavigation()
         setupSnakbar()
         getDates()
         setupReminder()
+
+    }
+
+    private fun editMode() {
+    }
+
+    private fun viewMode() {
+        etCheckNumber.isEnabled=false
+        etCheckAmount.isEnabled=false
+        etnCheckDate.isEnabled=false
+        binding.etCheckReciverParent.isEnabled=false
+        binding.etCheckAmountParent.isEnabled=false
+        etTimeRemind.isEnabled=false
+        etDateRemind.isEnabled=false
+        binding.btnReminder.isEnabled=false
+        binding.btnOk.run {
+            isEnabled=false
+            setOnClickListener(null)
+            visibility=View.GONE
+        }
+        binding.btnCancel.run {
+            isEnabled=false
+            setOnClickListener(null)
+            visibility=View.GONE
+        }
+        binding.btnNewReciver.visibility=View.GONE
+        binding.btnNewBank.visibility=View.GONE
     }
 
     override fun onResume() {
@@ -88,8 +131,8 @@ class CheckFragment : Fragment() {
             etnCheckDate.setText(it["date"])
             etCheckReciver.setText(it["reciver"])
             etCheckAccount.setText(it["account"])
-            binding.etDateRemind.setText(it["dateRemind"])
-            binding.etTimeRemind.setText(it["timeRemind"])
+            etDateRemind.setText(it["dateRemind"])
+            etTimeRemind.setText(it["timeRemind"])
         }
         super.onResume()
     }
@@ -102,8 +145,8 @@ class CheckFragment : Fragment() {
             etnCheckDate.setText(it["date"])
             etCheckReciver.setText(it["reciver"])
             etCheckAccount.setText(it["account"])
-            binding.etDateRemind.setText(it["dateRemind"])
-            binding.etTimeRemind.setText(it["timeRemind"])
+            etDateRemind.setText(it["dateRemind"])
+            etTimeRemind.setText(it["timeRemind"])
         }
     }
 
@@ -114,8 +157,8 @@ class CheckFragment : Fragment() {
         val date = etnCheckDate.text.toString()
         val reciver = etCheckReciver.text.toString()
         val account = etCheckAccount.text.toString()
-        val dateRemind = binding.etDateRemind.text.toString()
-        val timeRemind = binding.etTimeRemind.text.toString()
+        val dateRemind = etDateRemind.text.toString()
+        val timeRemind = etTimeRemind.text.toString()
 
         viewModel.state = mapOf("number" to number,"amount" to amount,
             "date" to date,"reciver" to reciver,"account" to account,
@@ -123,7 +166,7 @@ class CheckFragment : Fragment() {
     }
 
     private fun setupReminder() {
-        binding.etDateRemind.run {
+        etDateRemind.run {
             setOnClickListener {
                 setupDatePicker().let {
                     it.show(childFragmentManager, "reminder")
@@ -140,14 +183,14 @@ class CheckFragment : Fragment() {
                             }
                             PersianCalendar(selection!!).run {
                                 month++
-                                binding.etDateRemind.setText(toString())
+                                etDateRemind.setText(toString())
                             }
                         }
                     })
                 }
             }
         }
-        binding.etTimeRemind.run {
+        etTimeRemind.run {
             setOnClickListener {
                 setupTimePicker().let { timePicker ->
                     timePicker.show(childFragmentManager, "time reminder")
@@ -205,8 +248,8 @@ class CheckFragment : Fragment() {
         if (remider.timeInMillis != 0L)
             PersianCalendar().run {
                 timeInMillis = remider.timeInMillis
-                binding.etDateRemind.setText("$year/${month + 1}/$day")
-                binding.etTimeRemind.setText(
+                etDateRemind.setText("$year/${month + 1}/$day")
+                etTimeRemind.setText(
                     "${get(Calendar.HOUR_OF_DAY)}:${get(Calendar.MINUTE)}"
                 )
             }
@@ -239,6 +282,8 @@ class CheckFragment : Fragment() {
 
     private fun initView() {
         binding.reminderParent.visibility = View.GONE
+        etDateRemind=binding.etDateRemind
+        etTimeRemind=binding.etTimeRemind
         etCheckNumber = binding.etCheckNumber
         etCheckAmount = binding.etCheckAmount.apply {
             addTextChangedListener(object : TextWatcher {

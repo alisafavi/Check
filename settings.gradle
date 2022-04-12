@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "check"
 include ':app'
+include ':swipe_list_menu'

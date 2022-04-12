@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="text_input_layout_margin_horizontal">15dp</dimen>
-    <dimen name="text_input_layout_margin_vertical">12dp</dimen>
+    <dimen name="text_input_layout_margin_horizontal">10dp</dimen>
+    <dimen name="text_input_layout_margin_vertical">6dp</dimen>
     <dimen name="filled_margin">30dp</dimen>
 </resources>

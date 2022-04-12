@@ -20,6 +20,13 @@
     <string name="channel_name">upcoming check</string>
     <string name="channel_description">reminder for coming checks</string>
     <string name="add_notification_reminder">add notification reminder</string>
+    <string name="warning">Warning</string>
+    <string name="are_you_sure_to_delete">Are you sure to delete ?</string>
+    <string name="cancel">calncel</string>
+    <string name="ok">ok</string>
+    <string name="paid">paid</string>
+    <string name="un_paid">un paid</string>
+    <string name="all">all</string>
     <array name="bank_name">
         <item>mellat</item>
         <item>melli</item>

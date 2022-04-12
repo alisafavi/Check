@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:icon="@drawable/ic_add"
+        android:title="Item" />
+    <item
+        android:icon="@drawable/ic_filter_list"
+        android:title="sort"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/all"
+                android:icon="@drawable/ic_done_all"
+                android:title="@string/all" />
+            <item
+                android:id="@+id/paid"
+                android:icon="@drawable/ic_price_check"
+                android:title="@string/paid" />
+            <item
+                android:id="@+id/unPaid"
+                android:icon="@drawable/ic_money_off"
+                android:title="@string/un_paid" />
+        </menu>
+    </item>
+</menu>

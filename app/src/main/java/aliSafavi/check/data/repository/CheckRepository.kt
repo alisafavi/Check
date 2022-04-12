@@ -18,7 +18,7 @@ class CheckRepository @Inject constructor(
     private val personDao: PersonDao
 ) {
 
-    fun getUnPassedChecks() = checkDao.getUnPassedChecks()
+    fun getFilteredChecks(isPaid:Boolean?) = checkDao.getFilteredChecks(isPaid)
     suspend fun insert(check: Check) {
         checkDao.insert(check)
     }
@@ -64,6 +64,20 @@ class CheckRepository @Inject constructor(
                 return@withContext Result.failure(Exception("Task not found!"))
         } catch (e: Exception) {
             return@withContext Result.failure(e)
+        }
+    }
+
+    suspend fun passCheck(checkId: Long) {
+        try {
+            checkDao.passCheck(checkId)
+        }catch (e:Exception){
+        }
+    }
+
+    suspend fun deleteCheck(checkId: Long) {
+        try {
+            checkDao.deleteCheck(checkId)
+        }catch (e:Exception){
         }
     }
 

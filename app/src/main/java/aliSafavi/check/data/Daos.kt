@@ -20,14 +20,20 @@ interface FullCheckDao {
     suspend fun update(check: Check)
 
     @Transaction
-    @Query("select * from `Check` where isPaid = '0' order by date")
-    fun getUnPassedChecks(): Flow<List<FullCheck>>
+    @Query("select * from `Check` where :isPaid isnull or isPaid =:isPaid order by date")
+    fun getFilteredChecks(isPaid :Boolean?): Flow<List<FullCheck>>
 
     @Query("select * from `check` where cId=:checkId")
     suspend fun getCheck(checkId: Long): FullCheck
 
     @Query("select * from `Check` where number=:number")
     suspend fun checkCheck(number: Long): List<Check>
+
+    @Query("update `check` set isPaid=1 where cId=:checkId ")
+    suspend fun passCheck(checkId: Long)
+
+    @Query("delete from `check` where cId=:checkId")
+    suspend fun deleteCheck(checkId: Long)
 }
 
 @Dao
