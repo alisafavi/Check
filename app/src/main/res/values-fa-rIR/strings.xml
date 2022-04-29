@@ -43,4 +43,5 @@
     <string name="select_your_account">حساب بانکی را انتخاب کنید</string>
     <string name="Enter_reciver_phone_number">شماره موبایل گیرنده را وارد کنید</string>
     <string name="Enter_reciver_name">نام گیرنده را وارد کنید</string>
+    <string name="accountNumber">شماره حساب</string>
 </resources>

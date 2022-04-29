@@ -8,6 +8,11 @@
         <entry key="../../../program/Android/Sdk/platforms/android-31/data/res/layout/two_line_list_item.xml" value="0.35625" />
         <entry key="../../../program/Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_1.xml" value="0.35625" />
         <entry key="../../../program/Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_2.xml" value="0.35625" />
+        <entry key="..\:/Users/alisa/StudioProjects/Check/app/src/main/res/layout/activity_main.xml" value="0.10400000000000001" />
+        <entry key="..\:/Users/alisa/StudioProjects/Check/app/src/main/res/layout/bank_item.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/alisa/StudioProjects/Check/app/src/main/res/layout/bank_logo_item.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/alisa/StudioProjects/Check/app/src/main/res/layout/check_item.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/alisa/StudioProjects/Check/app/src/main/res/layout/fragment_check_list.xml" value="0.25416666666666665" />
         <entry key="app/src/main/res/drawable-v24/baseline_calendar_month_20.xml" value="0.2695" />
         <entry key="app/src/main/res/drawable-v24/baseline_calendar_month_24.xml" value="0.2695" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3" />
@@ -55,6 +60,9 @@
         <entry key="swipe_list_menu/src/main/res/layout/x_recycler_view_load_more.xml" value="0.3507692307692308" />
       </map>
     </option>
+  </component>
+  <component name="JavadocGenerationManager">
+    <option name="OUTPUT_DIRECTORY" value="$USER_HOME$/Desktop/a" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />

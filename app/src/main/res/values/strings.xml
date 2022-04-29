@@ -42,5 +42,6 @@
     <string name="select_your_account">select your account</string>
     <string name="Enter_reciver_phone_number">Enter reciver phone number</string>
     <string name="Enter_reciver_name">Enter reciver name</string>
+    <string name="accountNumber">acocoun number</string>
 
 </resources>

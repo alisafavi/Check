@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="10dp"
-                    android:text="@{@string/acocountNumber(bank.accountNumber)}"
+                    android:text="@{@string/accountNumber(bank.accountNumber)}"
                     app:layout_constraintEnd_toStartOf="@+id/bankItemImg"
                     app:layout_constraintTop_toBottomOf="@+id/textView" />
 
