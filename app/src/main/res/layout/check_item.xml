@@ -29,7 +29,7 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/img_bank"
-                setFromAssets="@{Check.bank.img}"
+                setFromAssets="@{Check.bank.accountNumber}"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:scaleType="centerInside"

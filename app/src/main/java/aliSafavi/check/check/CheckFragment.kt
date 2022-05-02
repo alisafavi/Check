@@ -2,6 +2,7 @@ package aliSafavi.check.check
 
 import aliSafavi.check.EventObserver
 import aliSafavi.check.R
+import aliSafavi.check.bank.convertDate
 import aliSafavi.check.databinding.FragmentCheckBinding
 import aliSafavi.check.reciver.AlarmReciver
 import aliSafavi.check.utils.NumberToText
@@ -307,18 +308,17 @@ class CheckFragment : DialogFragment() {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    val et_amount = binding.etCheckAmount
-                    val input = et_amount.text.toString().replace(",", "")
+                    val input = etCheckAmount.text.toString().replace(",", "")
                     if (!input.isEmpty()) {
-                        et_amount.removeTextChangedListener(this)
+                        etCheckAmount.removeTextChangedListener(this)
                         val decimalFormat = DecimalFormat(",###", DecimalFormatSymbols(Locale.US))
                         val text = decimalFormat.format(input.toBigInteger())
-                        et_amount.setText(text)
-                        et_amount.setSelection(text.length)
-                        et_amount.addTextChangedListener(this)
+                        etCheckAmount.setText(text)
+                        etCheckAmount.setSelection(text.length)
+                        etCheckAmount.addTextChangedListener(this)
 
                         binding.etCheckAmountParent.helperText =
-                            NumberToText(input.toString()).toString() + " تومان"
+                            NumberToText(input).toString() + " تومان"
                     }
                 }
 
@@ -385,9 +385,7 @@ class CheckFragment : DialogFragment() {
                 MaterialPickerOnPositiveButtonClickListener<Long?> {
                 override fun onPositiveButtonClick(selection: Long?) {
                     date = selection!!
-                    val date = PersianCalendar(selection!!)
-                    date.month++
-                    etnCheckDate.setText(date.toString())
+                    convertDate(etnCheckDate, selection!!)
                 }
             })
         }
@@ -420,7 +418,8 @@ class CheckFragment : DialogFragment() {
         if (validateForm()) {
             try {
                 viewModel.save(getForms())
-                setAlarm(remider)
+                if (binding.btnReminder.isChecked)
+                    setAlarm(remider)
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT).show()
             }

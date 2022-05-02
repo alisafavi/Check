@@ -33,7 +33,6 @@ data class Person (
 data class Bank (
     var name : String,
     val accountNumber : Long,
-    val img : String? = null,
     @PrimaryKey(autoGenerate = true)
     val bId: Int=0
 ){

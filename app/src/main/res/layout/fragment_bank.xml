@@ -19,35 +19,18 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_gravity="center"
         tools:ignore="MissingConstraints">
 
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/bank_img"
-            setFromAssets="@{viewModel.bank.img}"
-            android:layout_width="wrap_content"
+            setFromAssets="@{viewModel.bank.accountNumber}"
+            android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:scaleType="fitCenter"
             android:layout_gravity="center"
             app:srcCompat="@drawable/ic_image" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="?attr/textInputOutlinedExposedDropdownMenuStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            app:startIconDrawable="@drawable/ic_account"
-            filtering="false"
-            android:focusable="auto">
-
-            <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                android:id="@+id/et_bank_name"
-                withOutFiltering="@{viewModel.bank.img}"
-                android:layout_width="match_parent"
-                android:enabled="false"
-                android:layout_height="wrap_content"
-                android:hint="@string/select_your_bank_name"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             style="?attr/textInputOutlinedStyle"

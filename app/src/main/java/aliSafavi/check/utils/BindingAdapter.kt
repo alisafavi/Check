@@ -1,6 +1,8 @@
 package aliSafavi.check.bank
 
+import aliSafavi.check.R
 import aliSafavi.check.bank.BankFragment.Companion.BankLogoDir
+import aliSafavi.check.utils.bankCode
 import android.app.Person
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -22,30 +24,23 @@ import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
 
-@BindingAdapter("setFromDrawble")
-fun setFromDrawble(view: ShapeableImageView, drawable: Drawable) {
-    view.setImageDrawable(drawable)
-}
-
 @BindingAdapter("setFromAssets")
-fun setFromAssets(view: ShapeableImageView, fName: String?) {
-    fName?.let {
+fun setFromAssets(view: ShapeableImageView, accountNo: Long?) {
+    accountNo?.let {
         try {
-            view.context.assets.open(BankLogoDir + "/" + fName).use {
-                Drawable.createFromStream(it, null)?.let {
-                    view.setImageDrawable(it)
+            var num:Long =it
+            while (num>1000000)
+                num /= 10
+            val bankName = bankCode[num.toInt()]
+            view.context.assets.open("$BankLogoDir/$bankName.png").use {input->
+                Drawable.createFromStream(input, null)?.let {draw->
+                    view.setImageDrawable(draw)
                 }
             }
         } catch (e: FileNotFoundException) {
+            view.setImageResource(R.drawable.ic_image)
             Log.e("input stream", e.toString())
         }
-    }
-}
-
-@BindingAdapter("withOutFiltering")
-fun withOutFiltering(view: MaterialAutoCompleteTextView, text: String?) {
-    text?.let {
-        view.setText(it.removeSuffix(".png"), false)
     }
 }
 

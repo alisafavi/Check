@@ -39,7 +39,6 @@ class BankFragment : Fragment() {
     private val viewModel: BankViewModel by viewModels()
     private val args: BankFragmentArgs by navArgs()
 
-    private lateinit var etBankName: AutoCompleteTextView
     private lateinit var etAccountName: TextInputEditText
     private lateinit var etBankNumber: TextInputEditText
     private lateinit var btnCancel: Button
@@ -80,32 +79,6 @@ class BankFragment : Fragment() {
 
 
     private fun initView() {
-        etBankName = binding.etBankName.apply {
-            val data = ArrayList<BankLogo>()
-            runBlocking {
-                requireContext().assets.list(BankLogoDir)?.map {
-                    val inputStream = requireContext().assets.open(BankLogoDir + "/" + it)
-                    val drawable = Drawable.createFromStream(inputStream, null)
-                    data.add(
-                        BankLogo(
-                            it.removeSuffix(".png"),
-                            drawable
-                        )
-                    )
-                }
-            }
-            val adapter = BankLogoAdapter(requireContext(), R.layout.bank_logo_item, data)
-            setAdapter(adapter)
-            setOnItemClickListener { adapterView, view, position, l ->
-                setText(data.get(position).bankName.removeSuffix(".png"), false)
-                data.get(position).bankImgSrc?.let {
-                    binding.bankImg.setImageDrawable(it)
-                }
-                error = null
-            }
-//            showDropDown()
-        }
-
         etAccountName = binding.etAccountName
         etBankNumber = binding.etBankNumber
         setupBankNumber()
@@ -115,23 +88,17 @@ class BankFragment : Fragment() {
 
     private fun setupBankNumber() {
         etBankNumber.doOnTextChanged { text, start, before, count ->
-            text?.let {
-                if(it.length == 6){
-                    val bankName = bankCode.get(it.toString().toInt())
-                    val inputStream = requireContext().assets.open("$BankLogoDir/$bankName.png")
-                    val drawable = Drawable.createFromStream(inputStream, null)
-                    binding.bankImg.setImageDrawable(drawable)
-                }
+            if (text!!.length == 6) {
+                setFromAssets(binding.bankImg, text.toString().toLong())
+            }
+            else if (text.isEmpty()){
+                setFromAssets(binding.bankImg, 0L)
             }
         }
     }
 
     private fun validateForm(): Boolean {
         var status = true
-        if (etBankName.text.toString().isEmpty()) {
-            etBankName.error = getString(R.string.empty_error)
-            status = false
-        }
         if (etAccountName.text.toString().isEmpty()) {
             etAccountName.error = getString(R.string.empty_error)
             status = false
@@ -154,7 +121,6 @@ class BankFragment : Fragment() {
                         bId = args.bankId,
                         name = etAccountName.text.toString().trim(),
                         accountNumber = binding.etBankNumber.text.toString().trim().toLong(),
-                        img = etBankName.text.toString().trim().plus(".png")
                     )
                 )
             } catch (e: Exception) {
