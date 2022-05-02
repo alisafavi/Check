@@ -44,4 +44,43 @@
     <string name="Enter_reciver_name">Enter reciver name</string>
     <string name="accountNumber">acocoun number</string>
 
+
+<!--    banks name-->
+
+    <string name="Eghtesad">bank eghtesad</string>
+    <string name="Ansar">bank ansar</string>
+    <string name="Iranzamin">bank iranzamin</string>
+    <string name="Parsian">bank parsian</string>
+    <string name="Bank_Pasargad">bank pasargad</string>
+    <string name="Bank_Ayandeh">bank ayandeh</string>
+    <string name="Tejarat">bank tejarat</string>
+    <string name="Tosee_Saderat">bank tosee saderat</string>
+    <string name="Bank_Hekmat">bank hekmat</string>
+    <string name="Bank_Day">bank day</string>
+    <string name="Refah">bank refah</string>
+    <string name="Saman">bank saman</string>
+    <string name="Sepah">bank sepah</string>
+    <string name="Sarmayeh">bank sarmayeh</string>
+    <string name="Sia">bank sia</string>
+    <string name="Shahr">bank shahr</string>
+    <string name="Saderat">bank saderat</string>
+    <string name="Mehr">bank mehr</string>
+    <string name="Ghavamin">bank ghavamin</string>
+    <string name="Karafarin">bank karafarin</string>
+    <string name="Agri">bank agri</string>
+    <string name="Gardeshgari">bank gardeshgari</string>
+    <string name="Maskan">bank maskan</string>
+    <string name="Mellat">bank mellat</string>
+    <string name="Melli">bank melli</string>
+    <string name="Mehr_Eghtesad">bank mehr eghtesad</string>
+    <string name="Postbank">post bank</string>
+    <string name="Tosee">bank tosee</string>
+    <string name="Kowsar">bank kowsar</string>
+    <string name="Askariye">bank askariye</string>
+    <string name="Resalat">bank resalat</string>
+    <string name="Khavarmiane">bank khavarmiane</string>
+    <string name="Markazi">bank markazi</string>
+    <string name="Tosee_Taavon">bank tosee taavon</string>
+
+
 </resources>

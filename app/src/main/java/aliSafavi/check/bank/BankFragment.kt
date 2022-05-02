@@ -4,6 +4,7 @@ import aliSafavi.check.EventObserver
 import aliSafavi.check.R
 import aliSafavi.check.databinding.FragmentBankBinding
 import aliSafavi.check.model.Bank
+import aliSafavi.check.utils.bankCode
 import aliSafavi.check.utils.setupSnackbar
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -15,6 +16,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.text.isDigitsOnly
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -99,15 +101,29 @@ class BankFragment : Fragment() {
                 data.get(position).bankImgSrc?.let {
                     binding.bankImg.setImageDrawable(it)
                 }
-                error=null
+                error = null
             }
 //            showDropDown()
         }
 
         etAccountName = binding.etAccountName
         etBankNumber = binding.etBankNumber
+        setupBankNumber()
         btnCancel = binding.btnCancel
         btnSaveEdit = binding.btnSaveEdit
+    }
+
+    private fun setupBankNumber() {
+        etBankNumber.doOnTextChanged { text, start, before, count ->
+            text?.let {
+                if(it.length == 6){
+                    val bankName = bankCode.get(it.toString().toInt())
+                    val inputStream = requireContext().assets.open("$BankLogoDir/$bankName.png")
+                    val drawable = Drawable.createFromStream(inputStream, null)
+                    binding.bankImg.setImageDrawable(drawable)
+                }
+            }
+        }
     }
 
     private fun validateForm(): Boolean {
@@ -120,10 +136,10 @@ class BankFragment : Fragment() {
             etAccountName.error = getString(R.string.empty_error)
             status = false
         }
-        if(etBankNumber.text.toString().isEmpty()){
+        if (etBankNumber.text.toString().isEmpty()) {
             etBankNumber.error = getString(R.string.empty_error)
             status = false
-        }else if (!etBankNumber.text.toString().isDigitsOnly()) {
+        } else if (!etBankNumber.text.toString().isDigitsOnly()) {
             etBankNumber.error = getString(R.string.invalid_value_error)
             status = false
         }
@@ -142,7 +158,7 @@ class BankFragment : Fragment() {
                     )
                 )
             } catch (e: Exception) {
-                Toast.makeText(requireContext(),e.toString(), Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -49,6 +49,23 @@
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            style="?attr/textInputOutlinedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            app:startIconDrawable="@drawable/ic_qr_code"
+            app:endIconMode="clear_text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_bank_number"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/enter_your_account_number"
+                android:inputType="number"
+                android:maxLines="1"
+                android:text='@{viewModel.bank.accountNumber != 0 ? Long.toString(viewModel.bank.accountNumber) :""}' />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             style="?attr/textInputOutlinedStyle"
@@ -67,24 +84,6 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:text="@{viewModel.bank.name}" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="?attr/textInputOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            app:startIconDrawable="@drawable/ic_qr_code"
-            app:endIconMode="clear_text">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_bank_number"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/enter_your_account_number"
-                android:inputType="number"
-                android:maxLines="1"
-                android:text='@{viewModel.bank.accountNumber != 0 ? Long.toString(viewModel.bank.accountNumber) :""}' />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
