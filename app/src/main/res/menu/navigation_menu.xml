@@ -16,4 +16,10 @@
         android:icon="@drawable/ic_person"
         />
 
+    <item
+        android:id="@+id/RetrofitFragment"
+        android:title="retrofit"
+        android:icon="@drawable/ic_api"
+        />
+
 </menu>

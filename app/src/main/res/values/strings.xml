@@ -43,5 +43,7 @@
     <string name="Enter_reciver_phone_number">Enter reciver phone number</string>
     <string name="Enter_reciver_name">Enter reciver name</string>
     <string name="accountNumber">acocoun number</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

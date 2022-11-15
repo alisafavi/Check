@@ -15,7 +15,6 @@
             <option value="$PROJECT_DIR$/swipe_list_menu" />
           </set>
         </option>
-        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

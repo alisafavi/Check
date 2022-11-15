@@ -67,6 +67,9 @@
         <action
             android:id="@+id/action_checkListFragment_to_personListFragment"
             app:destination="@id/personListFragment" />
+        <action
+            android:id="@+id/action_checkListFragment_to_retrofitFragment"
+            app:destination="@id/RetrofitFragment" />
     </fragment>
     <fragment
         android:id="@+id/personListFragment"
@@ -86,4 +89,9 @@
             android:id="@+id/action_bankListFragment_to_bankFragment"
             app:destination="@id/bankFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/RetrofitFragment"
+        android:name="aliSafavi.check.RetrofitFragment"
+        android:label="fragment_retrofit"
+        tools:layout="@layout/fragment_retrofit" />
 </navigation>
