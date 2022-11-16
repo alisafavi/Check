@@ -4,15 +4,15 @@ import aliSafavi.check.databinding.FragmentRetrofitBinding
 import aliSafavi.check.service.RetrofitService
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.create
+import androidx.fragment.app.Fragment
+import com.google.gson.GsonBuilder
+import retrofit2.*
+import retrofit2.converter.gson.GsonConverterFactory
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,13 +45,29 @@ class RetrofitFragment : Fragment() {
 
     private fun testApis() {
         binding.apiIndex.setOnClickListener {
-            lifecycleScope.launch {
-                RetrofitService.call.index().let {
-                    if (!it.isSuccessful)
-                        return@launch
-                    Log.i(TAG, it.body()!!)
-                    Toast.makeText(activity, it.body(), Toast.LENGTH_SHORT).show()
-                }
+            try {
+                val gson = GsonBuilder()
+                    .setLenient()
+                    .create()
+                val retrofit: Retrofit = Retrofit.Builder()
+                    .baseUrl("http://192.168.1.200:4204/api/")
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build()
+
+                val call = retrofit.create<RetrofitService>()
+
+                call.index().enqueue(object : Callback<String?> {
+                    override fun onResponse(call: Call<String?>, response: Response<String?>) {
+                        Log.i(TAG,response.body()!!)
+                        Toast.makeText(activity, response.body()!!, Toast.LENGTH_SHORT).show()
+                    }
+                    override fun onFailure(call: Call<String?>, t: Throwable) {
+                        Log.i(TAG, t.message!!)
+                        Toast.makeText(activity, t.message!!, Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }catch (e : Exception){
+                Log.e(TAG, e.message!!)
             }
         }
     }
